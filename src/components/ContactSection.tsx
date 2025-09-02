@@ -182,9 +182,9 @@ export default function ContactSection() {
                   <span className="font-medium text-cinza-escuro">Segunda a Sexta</span>
                   <span className="text-azul-confianca font-semibold">8h às 18h</span>
                 </div>
-                <div className="flex justify-between items-center p-3 bg-cinza-claro rounded-lg">
+                <div className="flex justify-between items-center p-3 bg-red-100 rounded-lg">
                   <span className="font-medium text-cinza-escuro">Sábado</span>
-                  <span className="text-cinza-medio">8h às 12h</span>
+                  <span className="text-red-600 font-semibold">Fechado</span>
                 </div>
                 <div className="flex justify-between items-center p-3 bg-red-100 rounded-lg">
                   <span className="font-medium text-cinza-escuro">Domingo</span>

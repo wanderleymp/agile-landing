@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { CheckCircle, AlertCircle, User, Building, MessageSquare, ArrowRight, ArrowLeft } from 'lucide-react'
-import LoadingSpinner from './LoadingSpinner'
 
 interface FormData {
   nome: string
@@ -157,7 +156,10 @@ export default function SmartContactForm() {
 
           {currentStep === 3 ? (
             <button onClick={handleSubmit} disabled={isSubmitting} className="btn-primary flex items-center px-6 py-3">
-              {isSubmitting ? <LoadingSpinner size="sm" color="white" /> : 'Solicitar Demonstração'}
+              {isSubmitting ? (
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+              ) : null}
+              {isSubmitting ? 'Enviando...' : 'Solicitar Demonstração'}
             </button>
           ) : (
             <button
