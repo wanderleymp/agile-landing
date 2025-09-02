@@ -1,0 +1,13 @@
+# Cloudflare Pages redirects
+
+# Redirect common bot/spam paths
+/wp-admin/* /index.html 301
+/admin/* /index.html 301
+/wp-login.php /index.html 301
+
+# Security redirects
+/.env /index.html 301
+/.git/* /index.html 301
+
+# Main SPA fallback - must be last
+/* /index.html 200

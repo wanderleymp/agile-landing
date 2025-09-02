@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Menu, X, Phone, MessageCircle } from 'lucide-react'
 import { useScrollDirection } from '@/hooks/useResponsive'
+import OptimizedImage from './ImageManager'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -45,10 +46,16 @@ export default function Header() {
       <div className="section-container">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <div className="bg-azul-confianca text-white p-2 rounded-lg">
-              <span className="font-bold text-xl">A</span>
-            </div>
+          <div className="flex items-center space-x-3">
+            <OptimizedImage
+              src="/images/logos/agile-logo.png"
+              alt="Agile Gestão Empresarial"
+              width={50}
+              height={50}
+              className="rounded-lg"
+              fallback="/images/logos/agile-placeholder.svg"
+              priority
+            />
             <div>
               <h1 className="font-poppins font-bold text-xl text-azul-confianca">
                 Agile Gestão
