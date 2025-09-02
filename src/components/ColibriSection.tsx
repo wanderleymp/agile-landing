@@ -1,6 +1,7 @@
 'use client'
 
 import { UtensilsCrossed, Truck, Coffee, Beer, Zap, BarChart3, CheckCircle, Shield, Smartphone, Clock } from 'lucide-react'
+import OptimizedImage from './ImageManager'
 
 export default function ColibriSection() {
   const modules = [
@@ -87,6 +88,21 @@ export default function ColibriSection() {
       <div className="section-container">
         {/* Header */}
         <div className="text-center mb-16">
+          {/* Logo do Colibri */}
+          <div className="flex justify-center mb-8">
+            <div className="bg-white rounded-2xl p-6 shadow-lg">
+              <OptimizedImage
+                src="/images/logos/colibri-logo.png"
+                alt="Sistema Colibri"
+                width={200}
+                height={80}
+                className="h-16 w-auto"
+                fallback="/images/logos/colibri-placeholder.svg"
+                priority
+              />
+            </div>
+          </div>
+          
           <h2 className="font-poppins font-bold text-3xl md:text-4xl text-cinza-escuro mb-6">
             <span className="text-azul-confianca">Sistema Colibri</span> - O Sistema de PDV 
             Mais Usado nos Melhores Restaurantes do Brasil

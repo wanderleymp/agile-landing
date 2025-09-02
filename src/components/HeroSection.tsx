@@ -1,6 +1,7 @@
 'use client'
 
 import { CheckCircle, Trophy, Target, BarChart3, MessageCircle } from 'lucide-react'
+import OptimizedImage from './ImageManager'
 
 export default function HeroSection() {
   const handleWhatsApp = () => {
@@ -105,6 +106,18 @@ export default function HeroSection() {
             <div className="bg-white rounded-xl md:rounded-2xl shadow-2xl p-6 md:p-8 relative overflow-hidden card-hover">
               <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-azul-confianca to-verde-sucesso rounded-full -mr-12 md:-mr-16 -mt-12 md:-mt-16 opacity-10"></div>
               <div className="text-center relative z-10">
+                {/* Logo do Colibri */}
+                <div className="mb-6">
+                  <OptimizedImage
+                    src="/images/logos/colibri-logo.png"
+                    alt="Sistema Colibri"
+                    width={150}
+                    height={60}
+                    className="h-12 w-auto mx-auto mb-4"
+                    fallback="/images/logos/colibri-placeholder.svg"
+                  />
+                </div>
+                
                 <div className="inline-block bg-gradient-to-r from-azul-confianca to-verde-sucesso text-white p-4 md:p-6 rounded-xl md:rounded-2xl mb-4 md:mb-6">
                   <BarChart3 className="w-12 h-12 md:w-16 md:h-16" />
                 </div>
