@@ -1,6 +1,7 @@
 'use client'
 
 import { Phone, MessageCircle, Mail, MapPin, Clock, Users, Calculator } from 'lucide-react'
+import SmartContactForm from './SmartContactForm'
 
 export default function ContactSection() {
   const contactMethods = [
