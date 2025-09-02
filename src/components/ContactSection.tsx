@@ -133,6 +133,19 @@ export default function ContactSection() {
           ))}
         </div>
 
+        {/* Smart Contact Form */}
+        <div className="mb-16">
+          <div className="text-center mb-8">
+            <h3 className="font-poppins font-bold text-2xl md:text-3xl text-cinza-escuro mb-4">
+              Ou Deixe Seus Dados que Entramos em Contato
+            </h3>
+            <p className="text-cinza-medio">
+              Preencha o formulário e receba uma proposta personalizada em até 24 horas
+            </p>
+          </div>
+          <SmartContactForm />
+        </div>
+
         {/* Company Info */}
         <div className="bg-white rounded-xl p-8 shadow-lg">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

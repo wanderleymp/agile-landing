@@ -5,7 +5,10 @@ import HeroSection from '@/components/HeroSection'
 import CredibilitySection from '@/components/CredibilitySection'
 import ColibriSection from '@/components/ColibriSection'
 import TrustSection from '@/components/TrustSection'
+import TestimonialsSection from '@/components/TestimonialsSection'
+import CTASection from '@/components/CTASection'
 import ContactSection from '@/components/ContactSection'
+import FAQSection from '@/components/FAQSection'
 import Footer from '@/components/Footer'
 
 export default function Home() {
@@ -16,6 +19,9 @@ export default function Home() {
       <CredibilitySection />
       <ColibriSection />
       <TrustSection />
+      <TestimonialsSection />
+      <CTASection />
+      <FAQSection />
       <ContactSection />
       <Footer />
       
