@@ -54,7 +54,7 @@ export default function TestimonialsSection() {
   }, [testimonials.length])
 
   return (
-    <section className="py-20 bg-gradient-to-br from-white to-cinza-claro">
+    <section id="depoimentos" className="py-20 bg-gradient-to-br from-white to-cinza-claro">
       <div className="section-container">
         {/* Header */}
         <div className="text-center mb-16">

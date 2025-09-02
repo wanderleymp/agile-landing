@@ -76,21 +76,46 @@ https://agile-gestao-landing.pages.dev
 | **Analytics** | Incluído | Pago |
 | **DDoS** | Incluído | Básico |
 
-## 🛠️ **Comandos Úteis**
+## 🛠️ **Troubleshooting - Configurações Corrigidas**
 
-### **Build local para teste:**
+### **❌ Se o site não abrir no Cloudflare:**
+
+**1. Verificar configurações no painel:**
+```
+✅ Build command: npm run build
+✅ Build output directory: out
+✅ Root directory: (deixar vazio)
+✅ Environment variables: NODE_VERSION = 18
+```
+
+**2. Verificar se o deploy funcionou:**
+- Painel Cloudflare → Deployments
+- Status deve estar "Success" ✅
+- Se falhou, verificar logs de build
+
+**3. Testar URL diretamente:**
 ```bash
+curl -I https://PROJETO-NOME.pages.dev
+```
+
+**4. Verificar DNS:**
+```bash
+nslookup PROJETO-NOME.pages.dev
+```
+
+### **🔧 Configurações Atualizadas:**
+- ✅ **_headers** corrigido para formato Cloudflare Pages
+- ✅ **_redirects** otimizado para Next.js static export
+- ✅ **wrangler.toml** adicionado para melhor compatibilidade
+- ✅ **functions/_middleware.js** para headers de segurança
+
+### **⚡ Build Otimizado:**
+```bash
+# Build local (para testar)
+npm run build
+
+# Build para Cloudflare (com _redirects)
 npm run build:cloudflare
-```
-
-### **Verificar arquivos gerados:**
-```bash
-ls -la out/
-```
-
-### **Testar localmente:**
-```bash
-npx serve out -p 3000
 ```
 
 ## ✅ **Checklist de Deploy**

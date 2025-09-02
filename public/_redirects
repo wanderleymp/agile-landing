@@ -1,13 +1,19 @@
-# Cloudflare Pages redirects
+# Cloudflare Pages redirects for Next.js Static Export
 
 # Redirect common bot/spam paths
-/wp-admin/* /index.html 301
-/admin/* /index.html 301
-/wp-login.php /index.html 301
+/wp-admin/* / 301
+/admin/* / 301
+/wp-login.php / 301
+/wp-content/* / 301
 
 # Security redirects
-/.env /index.html 301
-/.git/* /index.html 301
+/.env / 301
+/.git/* / 301
+/.well-known/* / 301
 
-# Main SPA fallback - must be last
+# Handle Next.js routing
+/api/* /404.html 404
+/_next/* /404.html 404
+
+# Main fallback for SPA routing
 /* /index.html 200
