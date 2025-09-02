@@ -119,7 +119,15 @@ export default function HeroSection() {
                 </div>
                 
                 <div className="inline-block bg-gradient-to-r from-azul-confianca to-verde-sucesso text-white p-4 md:p-6 rounded-xl md:rounded-2xl mb-4 md:mb-6">
-                  <BarChart3 className="w-12 h-12 md:w-16 md:h-16" />
+                  <OptimizedImage
+                    src="/images/logos/colibri-logo.png"
+                    alt="Sistema Colibri"
+                    width={64}
+                    height={64}
+                    className="w-12 h-12 md:w-16 md:h-16 object-contain"
+                    fallback="/images/logos/colibri-placeholder.svg"
+                    priority
+                  />
                 </div>
                 <h3 className="font-poppins font-bold responsive-text-2xl text-cinza-escuro mb-3 md:mb-4">
                   Sistema Colibri
