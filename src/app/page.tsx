@@ -6,7 +6,7 @@ import CredibilitySection from '@/components/CredibilitySection'
 import ColibriSection from '@/components/ColibriSection'
 import TrustSection from '@/components/TrustSection'
 import ContabilidadeSection from '@/components/ContabilidadeSection'
-import TestimonialsSection from '@/components/TestimonialsSection'
+// import TestimonialsSection from '@/components/TestimonialsSection'
 import CTASection from '@/components/CTASection'
 import ContactSection from '@/components/ContactSection'
 import FAQSection from '@/components/FAQSection'
@@ -21,7 +21,7 @@ export default function Home() {
       <ColibriSection />
       <TrustSection />
       <ContabilidadeSection />
-      <TestimonialsSection />
+      {/* <TestimonialsSection /> */}
       <CTASection />
       <FAQSection />
       <ContactSection />

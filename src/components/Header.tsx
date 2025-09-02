@@ -23,7 +23,7 @@ export default function Header() {
     { name: 'Início', href: '#inicio' },
     { name: 'Sistema Colibri', href: '#colibri' },
     { name: 'Contabilidade', href: '#contabilidade' },
-    { name: 'Depoimentos', href: '#depoimentos' },
+    // { name: 'Depoimentos', href: '#depoimentos' },
     { name: 'Contato', href: '#contato' },
   ]
 
