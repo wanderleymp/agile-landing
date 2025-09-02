@@ -92,10 +92,10 @@ export default function ColibriSection() {
           <div className="flex justify-center mb-8">
             <div className="bg-white rounded-xl p-6 shadow-lg">
               <OptimizedImage
-                src="/images/logos/colibri-logo.png"
+                src="/images/logos/colibri-section-logo.png"
                 alt="Sistema Colibri"
-                width={240}
-                height={96}
+                width={400}
+                height={160}
                 className="h-20 w-auto object-contain"
                 fallback="/images/logos/colibri-placeholder.svg"
                 priority

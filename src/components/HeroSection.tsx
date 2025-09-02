@@ -110,10 +110,10 @@ export default function HeroSection() {
                 <div className="flex justify-center mb-6">
                   <div className="bg-white rounded-xl p-4 shadow-lg">
                     <OptimizedImage
-                      src="/images/logos/colibri-logo.png"
+                      src="/images/logos/colibri-hero-logo.png"
                       alt="Sistema Colibri"
-                      width={180}
-                      height={72}
+                      width={300}
+                      height={120}
                       className="h-16 w-auto object-contain"
                       fallback="/images/logos/colibri-placeholder.svg"
                       priority
