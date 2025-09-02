@@ -107,27 +107,18 @@ export default function HeroSection() {
               <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-azul-confianca to-verde-sucesso rounded-full -mr-12 md:-mr-16 -mt-12 md:-mt-16 opacity-10"></div>
               <div className="text-center relative z-10">
                 {/* Logo do Colibri */}
-                <div className="mb-6">
-                  <OptimizedImage
-                    src="/images/logos/colibri-logo.png"
-                    alt="Sistema Colibri"
-                    width={150}
-                    height={60}
-                    className="h-12 w-auto mx-auto mb-4"
-                    fallback="/images/logos/colibri-placeholder.svg"
-                  />
-                </div>
-                
-                <div className="inline-block bg-gradient-to-r from-azul-confianca to-verde-sucesso text-white p-4 md:p-6 rounded-xl md:rounded-2xl mb-4 md:mb-6">
-                  <OptimizedImage
-                    src="/images/logos/colibri-logo.png"
-                    alt="Sistema Colibri"
-                    width={64}
-                    height={64}
-                    className="w-12 h-12 md:w-16 md:h-16 object-contain"
-                    fallback="/images/logos/colibri-placeholder.svg"
-                    priority
-                  />
+                <div className="flex justify-center mb-6">
+                  <div className="bg-white rounded-xl p-4 shadow-lg">
+                    <OptimizedImage
+                      src="/images/logos/colibri-logo.png"
+                      alt="Sistema Colibri"
+                      width={180}
+                      height={72}
+                      className="h-16 w-auto object-contain"
+                      fallback="/images/logos/colibri-placeholder.svg"
+                      priority
+                    />
+                  </div>
                 </div>
                 <h3 className="font-poppins font-bold responsive-text-2xl text-cinza-escuro mb-3 md:mb-4">
                   Sistema Colibri

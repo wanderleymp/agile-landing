@@ -90,13 +90,13 @@ export default function ColibriSection() {
         <div className="text-center mb-16">
           {/* Logo do Colibri */}
           <div className="flex justify-center mb-8">
-            <div className="bg-white rounded-2xl p-6 shadow-lg">
+            <div className="bg-white rounded-xl p-6 shadow-lg">
               <OptimizedImage
                 src="/images/logos/colibri-logo.png"
                 alt="Sistema Colibri"
-                width={200}
-                height={80}
-                className="h-16 w-auto"
+                width={240}
+                height={96}
+                className="h-20 w-auto object-contain"
                 fallback="/images/logos/colibri-placeholder.svg"
                 priority
               />
