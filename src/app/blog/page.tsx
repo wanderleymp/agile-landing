@@ -112,13 +112,14 @@ const getAllBlogPosts = () => [
   }
 ]
 
-const categories = [
-  { name: "Todos", count: 12 },
-  { name: "Tutoriais", count: 7 },
-  { name: "Gestão", count: 3 },
-  { name: "Integrações", count: 2 },
-  { name: "Cases", count: 2 }
-]
+// Get unique categories from posts
+const getCategories = (posts: ReturnType<typeof getAllBlogPosts>) => {
+  const categoryNames = ['Todos', ...Array.from(new Set(posts.map(post => post.category)))]
+  return categoryNames.map(category => ({
+    name: category,
+    count: category === 'Todos' ? posts.length : posts.filter(post => post.category === category).length
+  }))
+}
 
 // Simple pagination function
 const paginate = (posts: any[], currentPage: number, postsPerPage: number) => {
@@ -132,13 +133,21 @@ const getTotalPages = (totalPosts: number, postsPerPage: number) => {
   return Math.ceil(totalPosts / postsPerPage)
 }
 
-export default function BlogPage({ searchParams }: { searchParams: { page?: string } }) {
+export default function BlogPage({ searchParams }: { searchParams: { page?: string, category?: string } }) {
   const currentPage = parseInt(searchParams.page || '1')
   const postsPerPage = 3
+  const selectedCategory = searchParams.category || 'Todos'
   
   const allPosts = getAllBlogPosts()
-  const filteredPosts = paginate(allPosts, currentPage, postsPerPage)
-  const totalPages = getTotalPages(allPosts.length, postsPerPage)
+  const categories = getCategories(allPosts)
+  
+  // Filter posts by category
+  const categoryFilteredPosts = selectedCategory === 'Todos' 
+    ? allPosts 
+    : allPosts.filter(post => post.category === selectedCategory)
+  
+  const filteredPosts = paginate(categoryFilteredPosts, currentPage, postsPerPage)
+  const totalPages = getTotalPages(categoryFilteredPosts.length, postsPerPage)
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -179,17 +188,17 @@ export default function BlogPage({ searchParams }: { searchParams: { page?: stri
                 </div>
                 <div className="flex gap-2 overflow-x-auto pb-2">
                   {categories.map((category) => (
-                    <button
+                    <Link
                       key={category.name}
+                      href={`/blog${category.name === 'Todos' ? '' : `?category=${category.name}`}`}
                       className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-colors ${
-                        category.name === 'Todos'
+                        category.name === selectedCategory
                           ? 'bg-azul-confianca text-white'
                           : 'bg-cinza-claro text-cinza-escuro hover:bg-gray-200'
                       }`}
-                      disabled
                     >
                       {category.name} {category.count > 0 && `(${category.count})`}
-                    </button>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -197,63 +206,76 @@ export default function BlogPage({ searchParams }: { searchParams: { page?: stri
 
             {/* Blog Posts */}
             <div className="space-y-8">
-              {filteredPosts.map((post) => (
-                <article key={post.id} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                  <div className="md:flex">
-                    <div className="md:w-1/3">
-                      {post.image ? (
-                        <BlogImage 
-                          src={post.image} 
-                          alt={post.title}
-                          className="w-full h-full object-cover min-h-[200px]"
-                          fallbackText="Imagem indisponível"
-                        />
-                      ) : (
-                        <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-full min-h-[200px] flex items-center justify-center">
-                          <span className="text-cinza-medio text-sm">Imagem do post</span>
+              {filteredPosts.length > 0 ? (
+                filteredPosts.map((post) => (
+                  <article key={post.id} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <div className="md:flex">
+                      <div className="md:w-1/3">
+                        {post.image ? (
+                          <BlogImage 
+                            src={post.image} 
+                            alt={post.title}
+                            className="w-full h-full object-cover min-h-[200px]"
+                            fallbackText="Imagem indisponível"
+                          />
+                        ) : (
+                          <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-full min-h-[200px] flex items-center justify-center">
+                            <span className="text-cinza-medio text-sm">Imagem do post</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-6 md:w-2/3">
+                        <div className="flex items-center gap-4 text-sm text-cinza-medio mb-3">
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-4 h-4" />
+                            {new Date(post.date).toLocaleDateString('pt-BR')}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <User className="w-4 h-4" />
+                            {post.author}
+                          </span>
+                          <span className="bg-azul-confianca text-white px-2 py-1 rounded text-xs">
+                            {post.readTime}
+                          </span>
                         </div>
-                      )}
-                    </div>
-                    <div className="p-6 md:w-2/3">
-                      <div className="flex items-center gap-4 text-sm text-cinza-medio mb-3">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          {new Date(post.date).toLocaleDateString('pt-BR')}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <User className="w-4 h-4" />
-                          {post.author}
-                        </span>
-                        <span className="bg-azul-confianca text-white px-2 py-1 rounded text-xs">
-                          {post.readTime}
-                        </span>
-                      </div>
-                      <h2 className="font-poppins font-bold text-xl text-cinza-escuro mb-3">
-                        <Link href={`/blog/${post.slug}`} className="hover:text-azul-confianca transition-colors">
-                          {post.title}
-                        </Link>
-                      </h2>
-                      <p className="text-cinza-medio mb-4">
-                        {post.excerpt}
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <span className="inline-block bg-cinza-claro text-cinza-escuro px-3 py-1 rounded-full text-sm">
-                          {post.category}
-                        </span>
-                        <Link 
-                          href={`/blog/${post.slug}`}
-                          className="text-azul-confianca font-medium hover:text-azul-confianca/80 flex items-center gap-1"
-                        >
-                          Ler artigo completo
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                        </Link>
+                        <h2 className="font-poppins font-bold text-xl text-cinza-escuro mb-3">
+                          <Link href={`/blog/${post.slug}`} className="hover:text-azul-confianca transition-colors">
+                            {post.title}
+                          </Link>
+                        </h2>
+                        <p className="text-cinza-medio mb-4">
+                          {post.excerpt}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <span className="inline-block bg-cinza-claro text-cinza-escuro px-3 py-1 rounded-full text-sm">
+                            {post.category}
+                          </span>
+                          <Link 
+                            href={`/blog/${post.slug}`}
+                            className="text-azul-confianca font-medium hover:text-azul-confianca/80 flex items-center gap-1"
+                          >
+                            Ler artigo completo
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                          </Link>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                ))
+              ) : (
+                <div className="bg-white rounded-xl p-8 text-center">
+                  <h3 className="font-poppins font-bold text-xl text-cinza-escuro mb-2">Nenhum artigo encontrado</h3>
+                  <p className="text-cinza-medio mb-4">Não há artigos na categoria "{selectedCategory}" no momento.</p>
+                  <Link 
+                    href="/blog"
+                    className="btn-primary"
+                  >
+                    Ver todos os artigos
+                  </Link>
+                </div>
+              )}
             </div>
 
             {/* Pagination */}
@@ -262,7 +284,7 @@ export default function BlogPage({ searchParams }: { searchParams: { page?: stri
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                   <Link
                     key={page}
-                    href={`/blog?page=${page}`}
+                    href={`/blog?page=${page}${selectedCategory !== 'Todos' ? `&category=${selectedCategory}` : ''}`}
                     className={`px-4 py-2 rounded-lg ${
                       page === currentPage
                         ? 'bg-azul-confianca text-white'
@@ -295,17 +317,17 @@ export default function BlogPage({ searchParams }: { searchParams: { page?: stri
               <ul className="space-y-2">
                 {categories.map((category) => (
                   <li key={category.name}>
-                    <button 
+                    <Link 
+                      href={`/blog${category.name === 'Todos' ? '' : `?category=${category.name}`}`}
                       className={`flex justify-between items-center w-full p-2 rounded-lg hover:bg-cinza-claro ${
-                        category.name === 'Todos' ? 'bg-cinza-claro' : ''
+                        category.name === selectedCategory ? 'bg-cinza-claro' : ''
                       }`}
-                      disabled
                     >
                       <span className="text-cinza-escuro">{category.name}</span>
                       <span className="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">
                         {category.count}
                       </span>
-                    </button>
+                    </Link>
                   </li>
                 ))}
               </ul>
