@@ -31,10 +31,40 @@ const blogPosts = [
     readTime: "6 min",
     category: "Gestão",
     slug: "controle-financeiro-colibri"
+  },
+  {
+    id: 4,
+    title: "Como Usar o Colibri PED+ para Comandas Eletrônicas",
+    excerpt: "Guia completo para instalar e utilizar o aplicativo de comandas eletrônicas do Colibri...",
+    date: "1 de março de 2024",
+    readTime: "7 min",
+    category: "Tutoriais",
+    slug: "colibri-ped-comandas-eletronicas"
+  },
+  {
+    id: 5,
+    title: "Integração do Colibri com iFood: Automatize Seus Pedidos",
+    excerpt: "Aprenda a configurar a integração automática com iFood e outros deliverys para receber pedidos...",
+    date: "25 de fevereiro de 2024",
+    readTime: "6 min",
+    category: "Integrações",
+    slug: "colibri-ifood-integracao"
+  },
+  {
+    id: 6,
+    title: "Fechamento de Caixa do Colibri: Passo a Passo",
+    excerpt: "Domine completamente o fechamento de caixa do Colibri com nosso guia detalhado...",
+    date: "20 de fevereiro de 2024",
+    readTime: "8 min",
+    category: "Tutoriais",
+    slug: "fechamento-caixa-colibri"
   }
 ]
 
 export default function BlogPreviewSection() {
+  // Show the 3 most recent posts
+  const recentPosts = blogPosts.slice(0, 3);
+
   return (
     <section className="py-16 bg-cinza-claro">
       <div className="section-container">
@@ -48,7 +78,7 @@ export default function BlogPreviewSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {blogPosts.map((post) => (
+          {recentPosts.map((post) => (
             <article key={post.id} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 card-hover">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">

@@ -1,6 +1,7 @@
 import Link from 'next/link'
-import { Search, Calendar, User, Tag } from 'lucide-react'
+import { Search, Calendar, User, Tag, ArrowLeft } from 'lucide-react'
 import LeadMagnetForm from '@/components/blog/LeadMagnetForm'
+import BlogImage from '@/components/blog/BlogImage'
 
 // This function is required for static export
 export async function generateStaticParams() {
@@ -9,7 +10,7 @@ export async function generateStaticParams() {
 }
 
 // Mock blog data - will be replaced with real data from CMS or API
-const blogPosts = [
+const getAllBlogPosts = () => [
   {
     id: 1,
     title: "Como Cadastrar Produtos no Colibri Back Office",
@@ -42,6 +43,72 @@ const blogPosts = [
     readTime: "6 min",
     image: "/images/blog/controle-financeiro.jpg",
     slug: "controle-financeiro-colibri"
+  },
+  {
+    id: 4,
+    title: "Como Usar o Colibri PED+ para Comandas Eletrônicas",
+    excerpt: "Guia completo para instalar e utilizar o aplicativo de comandas eletrônicas do Colibri em dispositivos Android.",
+    date: "2024-03-01",
+    author: "Equipe Agile",
+    category: "Tutoriais",
+    readTime: "7 min",
+    image: "/images/blog/colibri-ped.jpg",
+    slug: "colibri-ped-comandas-eletronicas"
+  },
+  {
+    id: 5,
+    title: "Integração do Colibri com iFood: Automatize Seus Pedidos",
+    excerpt: "Aprenda a configurar a integração automática com iFood e outros deliverys para receber pedidos diretamente no sistema.",
+    date: "2024-02-25",
+    author: "Equipe Agile",
+    category: "Integrações",
+    readTime: "6 min",
+    image: "/images/blog/colibri-ifood.jpg",
+    slug: "colibri-ifood-integracao"
+  },
+  {
+    id: 6,
+    title: "Fechamento de Caixa do Colibri: Passo a Passo",
+    excerpt: "Domine completamente o fechamento de caixa do Colibri com nosso guia detalhado passo a passo.",
+    date: "2024-02-20",
+    author: "Equipe Agile",
+    category: "Tutoriais",
+    readTime: "8 min",
+    image: "/images/blog/fechamento-caixa.jpg",
+    slug: "fechamento-caixa-colibri"
+  },
+  {
+    id: 7,
+    title: "Relatórios Gerenciais do Colibri: Tomada de Decisão",
+    excerpt: "Aprenda a interpretar os principais relatórios do Colibri para tomar decisões estratégicas para o seu restaurante.",
+    date: "2024-02-15",
+    author: "Equipe Agile",
+    category: "Gestão",
+    readTime: "6 min",
+    image: "/images/blog/relatorios-gerenciais.jpg",
+    slug: "relatorios-gerenciais-colibri"
+  },
+  {
+    id: 8,
+    title: "Gestão de Estoque Inteligente com Colibri",
+    excerpt: "Descubra como otimizar seu controle de estoque com as ferramentas inteligentes do sistema Colibri.",
+    date: "2024-02-10",
+    author: "Equipe Agile",
+    category: "Tutoriais",
+    readTime: "7 min",
+    image: "/images/blog/gestao-estoque.jpg",
+    slug: "gestao-estoque-colibri"
+  },
+  {
+    id: 9,
+    title: "Fidelização de Clientes com o Colibri Delivery",
+    excerpt: "Estratégias para criar programas de fidelização eficazes usando o módulo de delivery do Colibri.",
+    date: "2024-02-05",
+    author: "Equipe Agile",
+    category: "Gestão",
+    readTime: "5 min",
+    image: "/images/blog/clientes-fieis.jpg",
+    slug: "fidelizacao-clientes-colibri"
   }
 ]
 
@@ -49,18 +116,42 @@ const categories = [
   { name: "Todos", count: 12 },
   { name: "Tutoriais", count: 7 },
   { name: "Gestão", count: 3 },
+  { name: "Integrações", count: 2 },
   { name: "Cases", count: 2 }
 ]
 
-export default function BlogPage() {
-  // For server component, we'll show all posts without filtering
-  const filteredPosts = blogPosts
+// Simple pagination function
+const paginate = (posts: any[], currentPage: number, postsPerPage: number) => {
+  const startIndex = (currentPage - 1) * postsPerPage
+  const endIndex = startIndex + postsPerPage
+  return posts.slice(startIndex, endIndex)
+}
+
+// Get total pages
+const getTotalPages = (totalPosts: number, postsPerPage: number) => {
+  return Math.ceil(totalPosts / postsPerPage)
+}
+
+export default function BlogPage({ searchParams }: { searchParams: { page?: string } }) {
+  const currentPage = parseInt(searchParams.page || '1')
+  const postsPerPage = 3
+  
+  const allPosts = getAllBlogPosts()
+  const filteredPosts = paginate(allPosts, currentPage, postsPerPage)
+  const totalPages = getTotalPages(allPosts.length, postsPerPage)
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow-sm">
-        <div className="section-container py-8">
+        <div className="section-container py-6">
+          <Link 
+            href="/" 
+            className="inline-flex items-center text-azul-confianca hover:text-azul-confianca/80 mb-4"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Voltar para página principal
+          </Link>
           <h1 className="font-poppins font-bold text-3xl md:text-4xl text-cinza-escuro mb-4">
             Blog <span className="text-azul-confianca">Agile Gestão</span>
           </h1>
@@ -110,7 +201,18 @@ export default function BlogPage() {
                 <article key={post.id} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                   <div className="md:flex">
                     <div className="md:w-1/3">
-                      <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-full min-h-[200px]" />
+                      {post.image ? (
+                        <BlogImage 
+                          src={post.image} 
+                          alt={post.title}
+                          className="w-full h-full object-cover min-h-[200px]"
+                          fallbackText="Imagem indisponível"
+                        />
+                      ) : (
+                        <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-full min-h-[200px] flex items-center justify-center">
+                          <span className="text-cinza-medio text-sm">Imagem do post</span>
+                        </div>
+                      )}
                     </div>
                     <div className="p-6 md:w-2/3">
                       <div className="flex items-center gap-4 text-sm text-cinza-medio mb-3">
@@ -157,15 +259,19 @@ export default function BlogPage() {
             {/* Pagination */}
             <div className="mt-12 flex justify-center">
               <nav className="flex gap-2">
-                <button className="px-4 py-2 bg-azul-confianca text-white rounded-lg">1</button>
-                <button className="px-4 py-2 bg-white text-cinza-escuro border border-gray-300 rounded-lg hover:bg-gray-50">2</button>
-                <button className="px-4 py-2 bg-white text-cinza-escuro border border-gray-300 rounded-lg hover:bg-gray-50">3</button>
-                <button className="px-4 py-2 bg-white text-cinza-escuro border border-gray-300 rounded-lg hover:bg-gray-50">
-                  Próximo
-                  <svg className="w-4 h-4 inline-block ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <Link
+                    key={page}
+                    href={`/blog?page=${page}`}
+                    className={`px-4 py-2 rounded-lg ${
+                      page === currentPage
+                        ? 'bg-azul-confianca text-white'
+                        : 'bg-white text-cinza-escuro border border-gray-300 hover:bg-gray-50'
+                    }`}
+                  >
+                    {page}
+                  </Link>
+                ))}
               </nav>
             </div>
           </div>
@@ -209,13 +315,24 @@ export default function BlogPage() {
             <div className="bg-white rounded-xl p-6 shadow-sm">
               <h3 className="font-poppins font-bold text-lg text-cinza-escuro mb-4">Mais Populares</h3>
               <div className="space-y-4">
-                {blogPosts.slice(0, 3).map((post) => (
+                {allPosts.slice(0, 3).map((post) => (
                   <Link 
                     key={`popular-${post.id}`} 
                     href={`/blog/${post.slug}`}
                     className="flex gap-3 group"
                   >
-                    <div className="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16 flex-shrink-0" />
+                    {post.image ? (
+                      <BlogImage 
+                        src={post.image} 
+                        alt={post.title}
+                        className="w-16 h-16 object-cover rounded-xl flex-shrink-0"
+                        fallbackText="Img"
+                      />
+                    ) : (
+                      <div className="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16 flex-shrink-0 flex items-center justify-center">
+                        <span className="text-cinza-medio text-xs">Img</span>
+                      </div>
+                    )}
                     <div>
                       <h4 className="font-medium text-cinza-escuro group-hover:text-azul-confianca transition-colors text-sm">
                         {post.title}
