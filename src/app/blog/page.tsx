@@ -1,9 +1,12 @@
-'use client'
-
-import { useState } from 'react'
 import Link from 'next/link'
 import { Search, Calendar, User, Tag } from 'lucide-react'
 import LeadMagnetForm from '@/components/blog/LeadMagnetForm'
+
+// This function is required for static export
+export async function generateStaticParams() {
+  // Return empty array for static export
+  return []
+}
 
 // Mock blog data - will be replaced with real data from CMS or API
 const blogPosts = [
@@ -50,16 +53,8 @@ const categories = [
 ]
 
 export default function BlogPage() {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('Todos')
-
-  // Filter posts based on search and category
-  const filteredPosts = blogPosts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          post.excerpt.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesCategory = selectedCategory === 'Todos' || post.category === selectedCategory
-    return matchesSearch && matchesCategory
-  })
+  // For server component, we'll show all posts without filtering
+  const filteredPosts = blogPosts
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -79,7 +74,7 @@ export default function BlogPage() {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Main Content */}
           <div className="lg:w-2/3">
-            {/* Search and Filter */}
+            {/* Search and Filter - simplified for server component */}
             <div className="bg-white rounded-xl p-6 shadow-sm mb-8">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="relative flex-1">
@@ -88,8 +83,7 @@ export default function BlogPage() {
                     type="text"
                     placeholder="Buscar artigos..."
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-azul-confianca focus:border-transparent"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    readOnly
                   />
                 </div>
                 <div className="flex gap-2 overflow-x-auto pb-2">
@@ -97,11 +91,11 @@ export default function BlogPage() {
                     <button
                       key={category.name}
                       className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-colors ${
-                        selectedCategory === category.name
+                        category.name === 'Todos'
                           ? 'bg-azul-confianca text-white'
                           : 'bg-cinza-claro text-cinza-escuro hover:bg-gray-200'
                       }`}
-                      onClick={() => setSelectedCategory(category.name)}
+                      disabled
                     >
                       {category.name} {category.count > 0 && `(${category.count})`}
                     </button>
@@ -197,9 +191,9 @@ export default function BlogPage() {
                   <li key={category.name}>
                     <button 
                       className={`flex justify-between items-center w-full p-2 rounded-lg hover:bg-cinza-claro ${
-                        selectedCategory === category.name ? 'bg-cinza-claro' : ''
+                        category.name === 'Todos' ? 'bg-cinza-claro' : ''
                       }`}
-                      onClick={() => setSelectedCategory(category.name)}
+                      disabled
                     >
                       <span className="text-cinza-escuro">{category.name}</span>
                       <span className="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">

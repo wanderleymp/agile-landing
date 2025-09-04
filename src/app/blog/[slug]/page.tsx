@@ -1,80 +1,140 @@
-'use client'
-
 import Link from 'next/link'
 import { Calendar, User, Clock, Share2, ArrowLeft } from 'lucide-react'
 import LeadMagnetForm from '@/components/blog/LeadMagnetForm'
 
-// Mock data - will be replaced with real data fetching
-const blogPost = {
-  title: "Como Cadastrar Produtos no Colibri Back Office",
-  date: "2024-03-15",
-  author: "Equipe Agile",
-  readTime: "5 min",
-  category: "Tutoriais",
-  content: `
-    <p>O cadastro correto de produtos no Colibri Back Office é essencial para que o sistema funcione de forma integrada e eficiente. Neste tutorial, vamos mostrar passo a passo como cadastrar produtos vendáveis no sistema.</p>
-
-    <h2 className="font-poppins font-bold text-2xl text-cinza-escuro mt-8 mb-4">Acesso ao Módulo de Produtos</h2>
-    <p>Para começar, acesse o Colibri Back Office e navegue até o menu de cadastros:</p>
-    <ol className="list-decimal pl-6 space-y-2 my-4">
-      <li>No menu principal, clique em <strong>Cadastros</strong></li>
-      <li>Selecione <strong>Produtos Vendáveis</strong></li>
-      <li>Clique no botão <strong>Novo</strong> para iniciar o cadastro</li>
-    </ol>
-
-    <h2 className="font-poppins font-bold text-2xl text-cinza-escuro mt-8 mb-4">Preenchendo as Informações Básicas</h2>
-    <p>No formulário de cadastro, você precisará preencher as seguintes informações:</p>
-    
-    <div className="bg-cinza-claro rounded-lg p-4 my-4">
-      <h3 className="font-semibold text-cinza-escuro mb-2">Campos Obrigatórios:</h3>
-      <ul className="list-disc pl-6 space-y-1">
-        <li><strong>Nome do Produto:</strong> Nome que aparecerá no PDV</li>
-        <li><strong>Grupo/Categoria:</strong> Classificação do produto (ex: Bebidas, Pratos)</li>
-        <li><strong>Unidade de Medida:</strong> Unidade (unidade, kg, porção, etc.)</li>
-        <li><strong>Preço de Venda:</strong> Valor cobrado do cliente</li>
-      </ul>
-    </div>
-
-    <h2 className="font-poppins font-bold text-2xl text-cinza-escuro mt-8 mb-4">Configurações Avançadas</h2>
-    <p>Para um controle mais detalhado, configure também:</p>
-    <ul className="list-disc pl-6 space-y-2 my-4">
-      <li><strong>Preço de Custo:</strong> Para cálculo de margem de contribuição</li>
-      <li><strong>Tributação:</strong> Alíquota fiscal, NCM e CST</li>
-      <li><strong>Composição:</strong> Para produtos que contêm outros insumos</li>
-      <li><strong>Promoções:</strong> Descontos e regras especiais</li>
-    </ul>
-
-    <div className="bg-azul-claro border-l-4 border-azul-confianca p-4 my-6 rounded">
-      <h3 className="font-semibold text-cinza-escuro mb-2">Dica Profissional:</h3>
-      <p>Preencha sempre os campos de custo e tributação para ter relatórios financeiros precisos e evitar problemas com o fisco.</p>
-    </div>
-
-    <h2 className="font-poppins font-bold text-2xl text-cinza-escuro mt-8 mb-4">Sincronização com o PDV</h2>
-    <p>Após salvar o produto, é fundamental sincronizar com o PDV:</p>
-    <ol className="list-decimal pl-6 space-y-2 my-4">
-      <li>Acesse o módulo de <strong>Sincronização</strong> no menu principal</li>
-      <li>Selecione os pontos de venda que receberão o produto</li>
-      <li>Clique em <strong>Sincronizar</strong> e aguarde o processo concluir</li>
-      <li>Verifique no PDV se o produto aparece corretamente</li>
-    </ol>
-
-    <div className="relative my-8 rounded-xl overflow-hidden bg-gray-100 border-2 border-dashed min-h-[300px] flex items-center justify-center">
-      <span className="text-cinza-medio">Player de vídeo do YouTube será incorporado aqui</span>
-    </div>
-
-    <h2 className="font-poppins font-bold text-2xl text-cinza-escuro mt-8 mb-4">Verificação Final</h2>
-    <p>Para garantir que tudo está funcionando corretamente:</p>
-    <ul className="list-disc pl-6 space-y-2 my-4">
-      <li>Faça uma venda de teste no PDV com o novo produto</li>
-      <li>Verifique se o estoque é atualizado corretamente</li>
-      <li>Confirme se os relatórios refletem a nova venda</li>
-    </ul>
-
-    <p className="mt-6">Com esses passos, você terá cadastrado corretamente seus produtos no Colibri Back Office, garantindo uma operação integrada e eficiente.</p>
-  `
+// This function is required for static export
+export async function generateStaticParams() {
+  // For now, return empty array as we'll generate pages dynamically
+  // In a real implementation, this would fetch from a CMS or database
+  return [
+    { slug: 'cadastro-produtos-colibri-back-office' },
+    { slug: 'sincronizacao-pdv-backoffice' },
+    { slug: 'controle-financeiro-colibri' }
+  ]
 }
 
+// Mock data - will be replaced with real data fetching
+const getBlogPost = (slug: string) => {
+  const posts = {
+    'cadastro-produtos-colibri-back-office': {
+      title: "Como Cadastrar Produtos no Colibri Back Office",
+      date: "2024-03-15",
+      author: "Equipe Agile",
+      readTime: "5 min",
+      category: "Tutoriais",
+      content: `
+        <p>O cadastro correto de produtos no Colibri Back Office é essencial para que o sistema funcione de forma integrada e eficiente. Neste tutorial, vamos mostrar passo a passo como cadastrar produtos vendáveis no sistema.</p>
+
+        <h2 className="font-poppins font-bold text-2xl text-cinza-escuro mt-8 mb-4">Acesso ao Módulo de Produtos</h2>
+        <p>Para começar, acesse o Colibri Back Office e navegue até o menu de cadastros:</p>
+        <ol className="list-decimal pl-6 space-y-2 my-4">
+          <li>No menu principal, clique em <strong>Cadastros</strong></li>
+          <li>Selecione <strong>Produtos Vendáveis</strong></li>
+          <li>Clique no botão <strong>Novo</strong> para iniciar o cadastro</li>
+        </ol>
+
+        <h2 className="font-poppins font-bold text-2xl text-cinza-escuro mt-8 mb-4">Preenchendo as Informações Básicas</h2>
+        <p>No formulário de cadastro, você precisará preencher as seguintes informações:</p>
+        
+        <div className="bg-cinza-claro rounded-lg p-4 my-4">
+          <h3 className="font-semibold text-cinza-escuro mb-2">Campos Obrigatórios:</h3>
+          <ul className="list-disc pl-6 space-y-1">
+            <li><strong>Nome do Produto:</strong> Nome que aparecerá no PDV</li>
+            <li><strong>Grupo/Categoria:</strong> Classificação do produto (ex: Bebidas, Pratos)</li>
+            <li><strong>Unidade de Medida:</strong> Unidade (unidade, kg, porção, etc.)</li>
+            <li><strong>Preço de Venda:</strong> Valor cobrado do cliente</li>
+          </ul>
+        </div>
+
+        <h2 className="font-poppins font-bold text-2xl text-cinza-escuro mt-8 mb-4">Configurações Avançadas</h2>
+        <p>Para um controle mais detalhado, configure também:</p>
+        <ul className="list-disc pl-6 space-y-2 my-4">
+          <li><strong>Preço de Custo:</strong> Para cálculo de margem de contribuição</li>
+          <li><strong>Tributação:</strong> Alíquota fiscal, NCM e CST</li>
+          <li><strong>Composição:</strong> Para produtos que contêm outros insumos</li>
+          <li><strong>Promoções:</strong> Descontos e regras especiais</li>
+        </ul>
+
+        <div className="bg-azul-claro border-l-4 border-azul-confianca p-4 my-6 rounded">
+          <h3 className="font-semibold text-cinza-escuro mb-2">Dica Profissional:</h3>
+          <p>Preencha sempre os campos de custo e tributação para ter relatórios financeiros precisos e evitar problemas com o fisco.</p>
+        </div>
+
+        <h2 className="font-poppins font-bold text-2xl text-cinza-escuro mt-8 mb-4">Sincronização com o PDV</h2>
+        <p>Após salvar o produto, é fundamental sincronizar com o PDV:</p>
+        <ol className="list-decimal pl-6 space-y-2 my-4">
+          <li>Acesse o módulo de <strong>Sincronização</strong> no menu principal</li>
+          <li>Selecione os pontos de venda que receberão o produto</li>
+          <li>Clique em <strong>Sincronizar</strong> e aguarde o processo concluir</li>
+          <li>Verifique no PDV se o produto aparece corretamente</li>
+        </ol>
+
+        <div className="relative my-8 rounded-xl overflow-hidden bg-gray-100 border-2 border-dashed min-h-[300px] flex items-center justify-center">
+          <span className="text-cinza-medio">Player de vídeo do YouTube será incorporado aqui</span>
+        </div>
+
+        <h2 className="font-poppins font-bold text-2xl text-cinza-escuro mt-8 mb-4">Verificação Final</h2>
+        <p>Para garantir que tudo está funcionando corretamente:</p>
+        <ul className="list-disc pl-6 space-y-2 my-4">
+          <li>Faça uma venda de teste no PDV com o novo produto</li>
+          <li>Verifique se o estoque é atualizado corretamente</li>
+          <li>Confirme se os relatórios refletem a nova venda</li>
+        </ul>
+
+        <p className="mt-6">Com esses passos, você terá cadastrado corretamente seus produtos no Colibri Back Office, garantindo uma operação integrada e eficiente.</p>
+      `
+    },
+    'sincronizacao-pdv-backoffice': {
+      title: "Sincronização PDV x Back Office: Guia Completo",
+      date: "2024-03-10",
+      author: "Equipe Agile",
+      readTime: "4 min",
+      category: "Tutoriais",
+      content: `
+        <p>A sincronização entre o Colibri PDV e o Back Office é fundamental para manter todos os dados atualizados e consistentes. Este guia completo vai mostrar como realizar esse processo corretamente.</p>
+        
+        <h2 className="font-poppins font-bold text-2xl text-cinza-escuro mt-8 mb-4">Importância da Sincronização</h2>
+        <p>Manter os sistemas sincronizados garante que:</p>
+        <ul className="list-disc pl-6 space-y-2 my-4">
+          <li>Produtos cadastrados no Back Office apareçam no PDV</li>
+          <li>Preços atualizados sejam refletidos nas vendas</li>
+          <li>Estoque seja controlado em tempo real</li>
+          <li>Promoções e descontos sejam aplicados corretamente</li>
+        </ul>
+        
+        <div className="bg-azul-claro border-l-4 border-azul-confianca p-4 my-6 rounded">
+          <h3 className="font-semibold text-cinza-escuro mb-2">Dica Importante:</h3>
+          <p>Sempre sincronize após qualquer alteração no Back Office para evitar inconsistências.</p>
+        </div>
+      `
+    },
+    'controle-financeiro-colibri': {
+      title: "Controle Financeiro com Colibri: Dicas Essenciais",
+      date: "2024-03-05",
+      author: "Equipe Agile",
+      readTime: "6 min",
+      category: "Gestão",
+      content: `
+        <p>O módulo financeiro do Colibri é uma ferramenta poderosa para controlar as finanças do seu restaurante. Veja como utilizá-lo da melhor forma.</p>
+        
+        <h2 className="font-poppins font-bold text-2xl text-cinza-escuro mt-8 mb-4">Configurações Iniciais</h2>
+        <p>Antes de começar, configure corretamente:</p>
+        <ul className="list-disc pl-6 space-y-2 my-4">
+          <li>Plano de contas adequado ao seu negócio</li>
+          <li>Centros de custo (se necessário)</li>
+          <li>Formas de pagamento aceitas</li>
+          <li>Conciliação bancária inicial</li>
+        </ul>
+      `
+    }
+  };
+  
+  return posts[slug as keyof typeof posts] || posts['cadastro-produtos-colibri-back-office'];
+};
+
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
+  const blogPost = getBlogPost(params.slug);
+  
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
