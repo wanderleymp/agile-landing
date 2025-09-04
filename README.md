@@ -7,6 +7,8 @@
 
 Este repositório contém a estratégia digital completa para estabelecer a presença online da **Agile Gestão Empresarial** como líder em automação de restaurantes e contabilidade especializada em Rondônia e Acre.
 
+O projeto inclui uma landing page principal e um blog integrado para aumentar o engajamento e gerar leads qualificados através de conteúdo educativo.
+
 ---
 
 ## 📋 DOCUMENTOS INCLUÍDOS
@@ -113,6 +115,11 @@ Este repositório contém a estratégia digital completa para estabelecer a pres
 - **Meta Business** - Campanhas Facebook/Instagram
 - **Mailchimp/RD Station** - Email marketing
 - **Pipedrive/HubSpot** - CRM e pipeline
+
+### **BLOG:**
+- **Next.js Blog** - Sistema de blog integrado
+- **Lead Magnets** - Captura de leads através de conteúdo
+- **SEO Optimization** - Otimização para mecanismos de busca
 
 ---
 

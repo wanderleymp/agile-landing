@@ -292,6 +292,12 @@ ROI Campanhas: 6:1
 - Campanhas de tráfego pago
 - Monitoramento e ajustes
 
+### **SEMANAS 9-10: BLOG & CONTEÚDO EDUCATIVO**
+- Implementação do sistema de blog
+- Criação de 10 artigos iniciais
+- Integração com lead magnets
+- Configuração de automações de email
+
 ---
 
 ## 💰 INVESTIMENTO ESTIMADO
@@ -300,6 +306,7 @@ ROI Campanhas: 6:1
 - Landing page profissional
 - Integrações e automações
 - Setup técnico completo
+- Blog e sistema de conteúdo (R$ 3.000 - R$ 5.000)
 
 ### **MARKETING (R$ 5.000 - R$ 10.000/mês)**
 - Google Ads: R$ 3.000-5.000
@@ -310,6 +317,7 @@ ROI Campanhas: 6:1
 - Produção de materiais
 - Fotos profissionais
 - Vídeos demonstrativos
+- Blog e conteúdo educativo (R$ 1.500 - R$ 2.500)
 
 ---
 

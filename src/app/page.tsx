@@ -11,6 +11,7 @@ import CTASection from '@/components/CTASection'
 import ContactSection from '@/components/ContactSection'
 import FAQSection from '@/components/FAQSection'
 import Footer from '@/components/Footer'
+import BlogPreviewSection from '@/components/BlogPreviewSection'
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       <TrustSection />
       <ContabilidadeSection />
       {/* <TestimonialsSection /> */}
+      <BlogPreviewSection />
       <CTASection />
       <FAQSection />
       <ContactSection />
