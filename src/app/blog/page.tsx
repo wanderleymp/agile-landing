@@ -3,11 +3,10 @@ import { Search, Calendar, User, Tag, ArrowLeft } from 'lucide-react'
 import LeadMagnetForm from '@/components/blog/LeadMagnetForm'
 import BlogImage from '@/components/blog/BlogImage'
 
-export const dynamic = 'force-dynamic'
-
 // This function is required for static export
 export async function generateStaticParams() {
-  // Return empty array for static export
+  // For a blog with pagination, we might want to generate static pages for common combinations
+  // For now, we'll return an empty array and handle pagination dynamically
   return []
 }
 
