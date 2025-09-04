@@ -8,10 +8,12 @@ export default function LeadMagnetForm() {
     name: '',
     email: '',
     phone: '',
-    city: ''
+    city: '',
+    establishment: ''
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -24,26 +26,51 @@ export default function LeadMagnetForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setError('')
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    // In a real implementation, you would send the data to your backend here
-    console.log('Form submitted:', formData)
-    
-    setIsLoading(false)
-    setIsSubmitted(true)
-    
-    // Reset form after 5 seconds
-    setTimeout(() => {
-      setIsSubmitted(false)
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        city: ''
+    try {
+      // Prepare form data for webhook
+      const webhookData = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        city: formData.city,
+        establishment: formData.establishment,
+        date: new Date().toISOString()
+      }
+      
+      // Submit to webhook
+      const response = await fetch('https://n8n.webhook.agilefinance.com.br/webhook/landpage', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(webhookData)
       })
-    }, 5000)
+      
+      if (response.ok) {
+        setIsSubmitted(true)
+        
+        // Reset form after 5 seconds
+        setTimeout(() => {
+          setIsSubmitted(false)
+          setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            city: '',
+            establishment: ''
+          })
+        }, 5000)
+      } else {
+        throw new Error('Failed to submit form')
+      }
+    } catch (err) {
+      setError('Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.')
+      console.error('Form submission error:', err)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   if (isSubmitted) {
@@ -69,7 +96,11 @@ export default function LeadMagnetForm() {
         Cadastre-se para receber dicas, tutoriais e materiais exclusivos sobre gestão de restaurantes.
       </p>
       
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form 
+        onSubmit={handleSubmit} 
+        className="space-y-4"
+      >
+        
         <div>
           <input
             type="text"
@@ -116,6 +147,23 @@ export default function LeadMagnetForm() {
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-azul-confianca focus:border-transparent"
           />
         </div>
+        
+        <div>
+          <input
+            type="text"
+            name="establishment"
+            placeholder="Estabelecimento, necessidades, etc."
+            value={formData.establishment}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-azul-confianca focus:border-transparent"
+          />
+        </div>
+        
+        {error && (
+          <div className="text-red-500 text-sm text-center">
+            {error}
+          </div>
+        )}
         
         <button
           type="submit"
