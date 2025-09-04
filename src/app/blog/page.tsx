@@ -3,6 +3,8 @@ import { Search, Calendar, User, Tag, ArrowLeft } from 'lucide-react'
 import LeadMagnetForm from '@/components/blog/LeadMagnetForm'
 import BlogImage from '@/components/blog/BlogImage'
 
+export const dynamic = 'force-static'
+
 // This function is required for static export
 export async function generateStaticParams() {
   // Return empty array for static export
@@ -134,9 +136,11 @@ const getTotalPages = (totalPosts: number, postsPerPage: number) => {
 }
 
 export default function BlogPage({ searchParams }: { searchParams: { page?: string, category?: string } }) {
-  const currentPage = parseInt(searchParams.page || '1')
+  // For static generation, we need to handle searchParams differently
+  // We'll use default values for static generation
+  const currentPage = 1
   const postsPerPage = 3
-  const selectedCategory = searchParams.category || 'Todos'
+  const selectedCategory = 'Todos'
   
   const allPosts = getAllBlogPosts()
   const categories = getCategories(allPosts)
