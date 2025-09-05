@@ -93,7 +93,7 @@ export default function LeadMagnetForm() {
         Receba conteúdos exclusivos
       </h3>
       <p className="text-cinza-medio text-sm mb-4">
-        Cadastre-se para receber dicas, tutoriais e materiais exclusivos sobre gestão de restaurantes.
+        Cadastre-se para receber dicas, tutoriais e materiais exclusivos sobre gestão de restaurantes. Conte-nos sobre o seu estabelecimento para que possamos oferecer a melhor consultoria personalizada.
       </p>
       
       <form 
@@ -149,13 +149,12 @@ export default function LeadMagnetForm() {
         </div>
         
         <div>
-          <input
-            type="text"
+          <textarea
             name="establishment"
-            placeholder="Estabelecimento, necessidades, etc."
+            placeholder="Conte-nos como é o seu estabelecimento para que possamos oferecer a melhor consultoria personalizada. Quantos funcionários você tem? Qual o porte do seu negócio? Quais são seus principais desafios?"
             value={formData.establishment}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-azul-confianca focus:border-transparent"
+            onChange={(e) => handleChange({ target: { name: 'establishment', value: e.target.value } } as React.ChangeEvent<HTMLInputElement>)}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-azul-confianca focus:border-transparent min-h-[120px]"
           />
         </div>
         
