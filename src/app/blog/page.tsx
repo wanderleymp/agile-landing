@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Search, Calendar, User, Tag, ArrowLeft } from 'lucide-react'
 import LeadMagnetForm from '@/components/blog/LeadMagnetForm'
 import BlogImage from '@/components/blog/BlogImage'
+import BlogPagination from '@/components/blog/BlogPagination'
 
 // This function is required for static export
 export async function generateStaticParams() {
@@ -134,12 +135,12 @@ const getTotalPages = (totalPosts: number, postsPerPage: number) => {
   return Math.ceil(totalPosts / postsPerPage)
 }
 
-export default function BlogPage({ searchParams }: { searchParams: { page?: string, category?: string } }) {
-  // For static generation, we need to handle searchParams differently
-  // We'll use default values for static generation
-  const currentPage = searchParams?.page ? parseInt(searchParams.page) : 1
+export default function BlogPage() {
+  // For static generation, we use default values
+  // Dynamic behavior will be handled by client components
+  const currentPage = 1
   const postsPerPage = 3
-  const selectedCategory = searchParams?.category || 'Todos'
+  const selectedCategory = 'Todos'
   
   const allPosts = getAllBlogPosts()
   const categories = getCategories(allPosts)
@@ -177,35 +178,8 @@ export default function BlogPage({ searchParams }: { searchParams: { page?: stri
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Main Content */}
           <div className="lg:w-2/3">
-            {/* Search and Filter - simplified for server component */}
-            <div className="bg-white rounded-xl p-6 shadow-sm mb-8">
-              <div className="flex flex-col md:flex-row gap-4">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-cinza-medio w-5 h-5" />
-                  <input
-                    type="text"
-                    placeholder="Buscar artigos..."
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-azul-confianca focus:border-transparent"
-                    readOnly
-                  />
-                </div>
-                <div className="flex gap-2 overflow-x-auto pb-2">
-                  {categories.map((category) => (
-                    <Link
-                      key={category.name}
-                      href={`/blog${category.name === 'Todos' ? '' : `?category=${category.name}`}`}
-                      className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-colors ${
-                        category.name === selectedCategory
-                          ? 'bg-azul-confianca text-white'
-                          : 'bg-cinza-claro text-cinza-escuro hover:bg-gray-200'
-                      }`}
-                    >
-                      {category.name} {category.count > 0 && `(${category.count})`}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
+            {/* Search and Filter - using client component for dynamic behavior */}
+            <BlogPagination totalPages={totalPages} categories={categories} />
 
             {/* Blog Posts */}
             <div className="space-y-8">
@@ -281,24 +255,7 @@ export default function BlogPage({ searchParams }: { searchParams: { page?: stri
               )}
             </div>
 
-            {/* Pagination */}
-            <div className="mt-12 flex justify-center">
-              <nav className="flex gap-2">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                  <Link
-                    key={page}
-                    href={`/blog?page=${page}${selectedCategory !== 'Todos' ? `&category=${selectedCategory}` : ''}`}
-                    className={`px-4 py-2 rounded-lg ${
-                      page === currentPage
-                        ? 'bg-azul-confianca text-white'
-                        : 'bg-white text-cinza-escuro border border-gray-300 hover:bg-gray-50'
-                    }`}
-                  >
-                    {page}
-                  </Link>
-                ))}
-              </nav>
-            </div>
+
           </div>
 
           {/* Sidebar */}
