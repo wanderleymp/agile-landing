@@ -23,6 +23,21 @@ export default function BlogPagination({ totalPages, categories }: BlogPaginatio
     setSelectedCategory(category || 'Todos')
   }, [searchParams])
 
+  // Function to build pagination links
+  const buildPaginationLink = (page: number) => {
+    const params = new URLSearchParams()
+    if (page > 1) params.set('page', page.toString())
+    if (selectedCategory && selectedCategory !== 'Todos') params.set('category', selectedCategory)
+    return `/blog${params.toString() ? `?${params.toString()}` : ''}`
+  }
+
+  // Function to build category links
+  const buildCategoryLink = (category: string) => {
+    const params = new URLSearchParams()
+    if (category !== 'Todos') params.set('category', category)
+    return `/blog${params.toString() ? `?${params.toString()}` : ''}`
+  }
+
   return (
     <div className="space-y-8">
       {/* Category Filter */}
@@ -32,7 +47,7 @@ export default function BlogPagination({ totalPages, categories }: BlogPaginatio
             {categories.map((category) => (
               <Link
                 key={category.name}
-                href={`/blog${category.name === 'Todos' ? '' : `?category=${category.name}`}`}
+                href={buildCategoryLink(category.name)}
                 className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-colors ${
                   category.name === selectedCategory
                     ? 'bg-azul-confianca text-white'
@@ -52,7 +67,7 @@ export default function BlogPagination({ totalPages, categories }: BlogPaginatio
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <Link
               key={page}
-              href={`/blog?page=${page}${selectedCategory !== 'Todos' ? `&category=${selectedCategory}` : ''}`}
+              href={buildPaginationLink(page)}
               className={`px-4 py-2 rounded-lg ${
                 page === currentPage
                   ? 'bg-azul-confianca text-white'
