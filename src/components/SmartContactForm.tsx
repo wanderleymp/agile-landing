@@ -11,7 +11,7 @@ interface FormData {
   estabelecimento: string
   cidade: string
   tipo: string
-  servicos: string[]
+  servicos?: string[]
 }
 
 interface FormErrors {
@@ -88,9 +88,9 @@ export default function SmartContactForm() {
   const handleServiceToggle = (service: string) => {
     setFormData(prev => ({
       ...prev,
-      servicos: prev.servicos.includes(service)
+      servicos: prev.servicos?.includes(service)
         ? prev.servicos.filter(s => s !== service)
-        : [...prev.servicos, service]
+        : [...(prev.servicos || []), service]
     }))
   }
 
@@ -114,10 +114,10 @@ export default function SmartContactForm() {
     setFormData(prev => ({ ...prev, [field]: value }))
     
     // Clear error when user starts typing
-    if (errors[field]) {
+    if (errors[field as keyof FormErrors]) {
       setErrors(prev => {
         const newErrors = { ...prev }
-        delete newErrors[field]
+        delete newErrors[field as keyof FormErrors]
         return newErrors
       })
     }
@@ -282,7 +282,7 @@ export default function SmartContactForm() {
                   type="button" 
                   onClick={() => handleServiceToggle(service)}
                   className={`p-3 rounded-lg border-2 transition-all ${
-                    formData.servicos.includes(service)
+                    formData.servicos?.includes(service)
                       ? 'border-azul-confianca bg-azul-confianca text-white'
                       : 'border-gray-300 hover:border-azul-confianca'
                   }`}
@@ -292,7 +292,7 @@ export default function SmartContactForm() {
               ))}
             </div>
             
-            {formData.servicos.length === 0 && (
+            {(!formData.servicos || formData.servicos.length === 0) && (
               <p className="text-amber-600 text-sm text-center">
                 Selecione pelo menos um serviço de interesse
               </p>

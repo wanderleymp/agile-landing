@@ -8,15 +8,9 @@ import BlogPosts from '@/components/blog/BlogPosts'
 // Função para buscar todos os posts via API
 async function fetchAllBlogPosts() {
   try {
-    const response = await fetch('http://localhost:3002/api/blog/posts', {
-      cache: 'no-store'
-    })
-    
-    if (!response.ok) {
-      return []
-    }
-    
-    return await response.json()
+    const response = await fetch('http://localhost:3002/api/blog/list')
+    const posts = await response.json()
+    return posts
   } catch (error) {
     console.error('Failed to fetch blog posts:', error)
     return []
@@ -35,8 +29,10 @@ const getCategories = (posts: any[]) => {
 // This function is required for static export
 export async function generateStaticParams() {
   // For a blog with pagination, we might want to generate static pages for common combinations
-  // For now, we'll return an empty array and handle pagination dynamically
-  return []
+  // For now, we'll generate a few example pages
+  return Array.from({ length: 5 }, (_, i) => ({
+    page: (i + 1).toString(),
+  }))
 }
 
 export default async function BlogPage() {

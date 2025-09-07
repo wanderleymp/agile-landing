@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server'
-import { getBlogPost } from '@/lib/blog'
+import { getBlogPost, getAllBlogPosts } from '@/lib/blog'
 
+// Função necessária para exportação estática
 export async function generateStaticParams() {
-  // Para exportação estática, não precisamos gerar parâmetros para rotas de API
-  return []
+  const posts = getAllBlogPosts()
+  
+  return posts.map((post) => ({
+    slug: post.slug,
+  }))
 }
 
 export async function GET(

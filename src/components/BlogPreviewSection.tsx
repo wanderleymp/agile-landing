@@ -23,7 +23,7 @@ export default function BlogPreviewSection() {
     // Fetch blog posts from API endpoint
     const fetchBlogPosts = async () => {
       try {
-        const response = await fetch('/api/blog/posts')
+        const response = await fetch('/api/blog/list')
         const posts = await response.json()
         setRecentPosts(posts.slice(0, 3))
       } catch (error) {

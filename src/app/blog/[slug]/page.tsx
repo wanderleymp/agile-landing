@@ -1,8 +1,9 @@
 import Link from 'next/link'
-import { Calendar, User, Clock, Share2, ArrowLeft } from 'lucide-react'
-import { getBlogPost, getAllBlogPosts } from '@/lib/blog'
+import { Calendar, User, Clock, ArrowLeft, Search, AlertCircle } from 'lucide-react'
+import PostFooter from '@/components/blog/PostFooter'
 
 interface BlogPost {
+  id?: number
   title: string
   date: string
   author: string
@@ -21,54 +22,143 @@ interface PageProps {
 
 // Função necessária para exportação estática
 export async function generateStaticParams() {
-  const posts = getAllBlogPosts()
-  
-  return posts.map((post: BlogPost) => ({
-    slug: post.slug,
-  }))
+  try {
+    const response = await fetch('http://localhost:3002/api/blog/list')
+    const posts = await response.json()
+    
+    return posts.map((post: BlogPost) => ({
+      slug: post.slug,
+    }))
+  } catch (error) {
+    console.error('Failed to fetch blog posts for static params:', error)
+    return []
+  }
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const post = getBlogPost(params.slug);
-  
-  if (!post) {
+  try {
+    const response = await fetch(`http://localhost:3002/api/blog/posts/${params.slug}`)
+    const post = await response.json()
+    
+    if (!post) {
+      return {
+        title: 'Post não encontrado',
+        description: 'O post solicitado não foi encontrado.'
+      };
+    }
+    
+    return {
+      title: post.title,
+      description: `Leia sobre ${post.title} no blog da Agile Gestão Empresarial. ${post.readTime} de leitura.`,
+      openGraph: {
+        title: post.title,
+        description: `Leia sobre ${post.title} no blog da Agile Gestão Empresarial. ${post.readTime} de leitura.`,
+        type: 'article',
+        article: {
+          publishedTime: post.date,
+          authors: [post.author],
+          tags: [post.category]
+        }
+      }
+    };
+  } catch (error) {
+    console.error('Failed to fetch blog post metadata:', error)
     return {
       title: 'Post não encontrado',
       description: 'O post solicitado não foi encontrado.'
     };
   }
-  
-  return {
-    title: post.title,
-    description: `Leia sobre ${post.title} no blog da Agile Gestão Empresarial. ${post.readTime} de leitura.`,
-    openGraph: {
-      title: post.title,
-      description: `Leia sobre ${post.title} no blog da Agile Gestão Empresarial. ${post.readTime} de leitura.`,
-      type: 'article',
-      article: {
-        publishedTime: post.date,
-        authors: [post.author],
-        tags: [post.category]
-      }
-    }
-  };
 }
 
-export default function BlogPostPage({ params }: PageProps) {
-  const post = getBlogPost(params.slug);
+export default async function BlogPostPage({ params }: PageProps) {
+  let post: BlogPost | null = null;
+  let allPosts: BlogPost[] = [];
+  let relatedPosts: BlogPost[] = [];
   
-  // If post not found, return null to trigger 404
-  if (!post) {
-    return null;
+  try {
+    // Fetch the main post
+    const postResponse = await fetch(`http://localhost:3002/api/blog/posts/${params.slug}`)
+    post = await postResponse.json()
+    
+    // If post not found, return not found component
+    if (!post) {
+      return (
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
+          <div className="max-w-md w-full text-center">
+            <div className="bg-azul-claro rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+              <Search className="w-12 h-12 text-azul-confianca" />
+            </div>
+            
+            <h1 className="font-poppins font-bold text-3xl text-cinza-escuro mb-4">
+              Artigo não encontrado
+            </h1>
+            
+            <p className="text-cinza-medio mb-8">
+              Desculpe, não conseguimos encontrar o artigo que você está procurando. 
+              Ele pode ter sido removido ou o link pode estar incorreto.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link 
+                href="/blog"
+                className="btn-primary inline-flex items-center justify-center"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Voltar para o blog
+              </Link>
+              
+              <Link 
+                href="/"
+                className="btn-secondary inline-flex items-center justify-center"
+              >
+                Ir para a página inicial
+              </Link>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
+    // Fetch all posts for related posts and sidebar
+    const allPostsResponse = await fetch('http://localhost:3002/api/blog/list')
+    allPosts = await allPostsResponse.json()
+    
+    // Get related posts (same category, excluding current post)
+    relatedPosts = allPosts
+      .filter((p: BlogPost) => post && p.category === post.category && p.slug !== params.slug)
+      .slice(0, 4);
+      
+  } catch (error) {
+    console.error('Failed to fetch blog post data:', error)
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
+        <div className="max-w-md w-full text-center">
+          <div className="bg-red-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+            <AlertCircle className="w-12 h-12 text-red-600" />
+          </div>
+          
+          <h1 className="font-poppins font-bold text-3xl text-cinza-escuro mb-4">
+            Erro ao carregar o artigo
+          </h1>
+          
+          <p className="text-cinza-medio mb-8">
+            Ocorreu um erro ao carregar o artigo. Por favor, tente novamente mais tarde.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link 
+              href="/blog"
+              className="btn-primary inline-flex items-center justify-center"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar para o blog
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
   }
   
-  const allPosts = getAllBlogPosts();
-  
-  // Get related posts (same category, excluding current post)
-  const relatedPosts = allPosts
-    .filter((p: BlogPost) => p.category === post?.category && p.slug !== params.slug)
-    .slice(0, 4);
-
   // Format date
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = { 
@@ -138,34 +228,7 @@ export default function BlogPostPage({ params }: PageProps) {
               />
 
               {/* Post Footer */}
-              <footer className="mt-12 pt-8 border-t border-gray-200">
-                <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <Share2 className="w-5 h-5 text-cinza-medio" />
-                    <span className="text-cinza-medio">Compartilhar:</span>
-                    <div className="flex gap-2">
-                      <button 
-                        onClick={() => {
-                          if (typeof window !== 'undefined') {
-                            navigator.clipboard.writeText(window.location.href);
-                            alert('Link copiado para a área de transferência!');
-                          }
-                        }}
-                        className="text-azul-confianca hover:text-azul-confianca/80"
-                        title="Copiar link"
-                      >
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                  
-                  <div className="text-sm text-cinza-medio">
-                    Publicado em {formatDate(post.date)}
-                  </div>
-                </div>
-              </footer>
+              <PostFooter postDate={post.date} />
             </article>
 
             {/* Related Posts */}
@@ -175,34 +238,34 @@ export default function BlogPostPage({ params }: PageProps) {
               </h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {relatedPosts.slice(0, 4).map((post: BlogPost) => (
+                {relatedPosts.slice(0, 4).map((postItem: BlogPost) => (
                   <article 
-                    key={post.id} 
+                    key={postItem.id || postItem.slug} 
                     className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 card-hover"
                   >
                     <div className="p-5">
                       <div className="flex items-center justify-between mb-3">
                         <span className="inline-block bg-azul-claro text-azul-confianca px-2 py-1 rounded-full text-xs font-medium">
-                          {post.category}
+                          {postItem.category}
                         </span>
                         <span className="text-xs text-cinza-medio">
-                          {post.readTime}
+                          {postItem.readTime}
                         </span>
                       </div>
                       <h4 className="font-poppins font-bold text-lg text-cinza-escuro mb-2">
-                        <Link href={`/blog/${post.slug}`} className="hover:text-azul-confianca transition-colors">
-                          {post.title}
+                        <Link href={`/blog/${postItem.slug}`} className="hover:text-azul-confianca transition-colors">
+                          {postItem.title}
                         </Link>
                       </h4>
                       <p className="text-cinza-medio text-sm mb-3 line-clamp-2">
-                        {post.excerpt}
+                        {postItem.excerpt}
                       </p>
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-cinza-medio">
-                          {new Date(post.date).toLocaleDateString('pt-BR')}
+                          {new Date(postItem.date).toLocaleDateString('pt-BR')}
                         </span>
                         <Link 
-                          href={`/blog/${post.slug}`}
+                          href={`/blog/${postItem.slug}`}
                           className="text-azul-confianca font-medium hover:text-azul-confianca/80 flex items-center gap-1 text-sm"
                         >
                           Ler mais
@@ -296,7 +359,7 @@ export default function BlogPostPage({ params }: PageProps) {
               <div className="space-y-4">
                 {allPosts.slice(0, 5).map((postItem: BlogPost) => (
                   <Link 
-                    key={postItem.id} 
+                    key={`popular-${postItem.id || postItem.slug}`} 
                     href={`/blog/${postItem.slug}`}
                     className="flex gap-3 group"
                   >
