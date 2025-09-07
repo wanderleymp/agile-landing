@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import * as analytics from '@/lib/analytics'
 
 interface BlogPaginationProps {
   totalPages: number
@@ -38,6 +39,12 @@ export default function BlogPagination({ totalPages, categories }: BlogPaginatio
     return `/blog${params.toString() ? `?${params.toString()}` : ''}`
   }
 
+  // Handle category change with tracking
+  const handleCategoryChange = (category: string) => {
+    analytics.trackBlogCategoryFilter(category)
+    setSelectedCategory(category)
+  }
+
   return (
     <div className="space-y-8">
       {/* Category Filter */}
@@ -48,6 +55,7 @@ export default function BlogPagination({ totalPages, categories }: BlogPaginatio
               <Link
                 key={category.name}
                 href={buildCategoryLink(category.name)}
+                onClick={() => handleCategoryChange(category.name)}
                 className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-colors ${
                   category.name === selectedCategory
                     ? 'bg-azul-confianca text-white'
@@ -68,6 +76,7 @@ export default function BlogPagination({ totalPages, categories }: BlogPaginatio
             <Link
               key={page}
               href={buildPaginationLink(page)}
+              onClick={() => analytics.trackGAEvent('page_view', 'Blog', `Page ${page}`)}
               className={`px-4 py-2 rounded-lg ${
                 page === currentPage
                   ? 'bg-azul-confianca text-white'

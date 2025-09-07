@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Menu, X, Phone, MessageCircle } from 'lucide-react'
 import { useScrollDirection } from '@/hooks/useResponsive'
 import OptimizedImage from './ImageManager'
+import * as analytics from '@/lib/analytics'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -29,6 +30,7 @@ export default function Header() {
   ]
 
   const handleWhatsApp = () => {
+    analytics.trackWhatsAppClick('Header CTA')
     const message = "Olá! Gostaria de conhecer o sistema Colibri e os serviços da Agile."
     const whatsappUrl = `https://wa.me/5569984049494?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
@@ -145,7 +147,10 @@ export default function Header() {
                   </div>
                 </div>
                 <button 
-                  onClick={handleWhatsApp}
+                  onClick={() => {
+                    analytics.trackWhatsAppClick('Mobile Menu CTA')
+                    handleWhatsApp()
+                  }}
                   className="btn-primary w-full text-center"
                 >
                   DEMONSTRAÇÃO GRATUITA

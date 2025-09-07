@@ -2,6 +2,7 @@
 
 import { Phone, MessageCircle, Mail, MapPin, Clock, Users, Calculator } from 'lucide-react'
 import SmartContactForm from './SmartContactForm'
+import * as analytics from '@/lib/analytics'
 
 export default function ContactSection() {
   const contactMethods = [
@@ -32,6 +33,7 @@ export default function ContactSection() {
   ]
 
   const handleWhatsApp = (type: string) => {
+    analytics.trackWhatsAppClick(`Contact Section - ${type}`)
     let phone = ""
     let message = ""
     
@@ -57,7 +59,8 @@ export default function ContactSection() {
     window.open(whatsappUrl, '_blank')
   }
 
-  const handleEmail = (email: string) => {
+  const handleEmail = (email: string, source: string) => {
+    analytics.trackPhoneClick(`Contact Section - ${source}`)
     window.open(`mailto:${email}`, '_blank')
   }
 
@@ -112,7 +115,7 @@ export default function ContactSection() {
                     <span className="font-medium text-cinza-escuro text-sm">{method.email}</span>
                   </div>
                   <button
-                    onClick={() => handleEmail(method.email)}
+                    onClick={() => handleEmail(method.email, method.action)}
                     className="bg-azul-confianca hover:bg-blue-700 text-white p-2 rounded-lg transition-colors"
                     title="Enviar E-mail"
                   >
@@ -218,7 +221,7 @@ export default function ContactSection() {
                 FALAR NO WHATSAPP
               </button>
               <button 
-                onClick={() => handleEmail('comercial@agilegestaoempresarial.com.br')}
+                onClick={() => handleEmail('comercial@agilegestaoempresarial.com.br', 'Final CTA')}
                 className="bg-transparent border-2 border-white text-white font-semibold py-3 px-8 rounded-lg hover:bg-white hover:text-azul-confianca transition-colors duration-300 flex items-center justify-center"
               >
                 <Mail className="w-5 h-5 mr-2" />

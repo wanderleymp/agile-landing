@@ -1,32 +1,89 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CheckCircle } from 'lucide-react'
+import * as analytics from '@/lib/analytics'
+
+interface FormData {
+  name: string
+  email: string
+  phone: string
+  city: string
+  establishment: string
+}
+
+interface FormErrors {
+  name?: string
+  email?: string
+  city?: string
+}
 
 export default function LeadMagnetForm() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     phone: '',
     city: '',
     establishment: ''
   })
+  const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Track form view
+  useEffect(() => {
+    analytics.trackGAEvent('view_item', 'Blog', 'Lead Magnet Form')
+  }, [])
+
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {}
+    
+    if (!formData.name.trim()) {
+      newErrors.name = 'Nome é obrigatório'
+    }
+    
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email é obrigatório'
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email inválido'
+    }
+    
+    if (!formData.city.trim()) {
+      newErrors.city = 'Cidade é obrigatória'
+    }
+    
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
       [name]: value
     }))
+    
+    // Clear error when user starts typing
+    if (errors[name as keyof FormErrors]) {
+      setErrors(prev => {
+        const newErrors = { ...prev }
+        delete newErrors[name as keyof FormErrors]
+        return newErrors
+      })
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!validateForm()) {
+      return
+    }
+    
     setIsLoading(true)
     setError('')
+    analytics.trackGAEvent('generate_lead', 'Blog', 'Lead Magnet Form Submit')
     
     try {
       // Prepare form data for webhook
@@ -50,6 +107,10 @@ export default function LeadMagnetForm() {
       
       if (response.ok) {
         setIsSubmitted(true)
+        analytics.trackMetaEvent('Lead', { 
+          content_name: 'Blog Lead Magnet',
+          email: formData.email
+        })
         
         // Reset form after 5 seconds
         setTimeout(() => {
@@ -109,8 +170,11 @@ export default function LeadMagnetForm() {
             required
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-azul-confianca focus:border-transparent"
+            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-azul-confianca focus:border-transparent ${
+              errors.name ? 'border-red-500' : 'border-gray-300'
+            }`}
           />
+          {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
         </div>
         
         <div>
@@ -121,8 +185,11 @@ export default function LeadMagnetForm() {
             required
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-azul-confianca focus:border-transparent"
+            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-azul-confianca focus:border-transparent ${
+              errors.email ? 'border-red-500' : 'border-gray-300'
+            }`}
           />
+          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
         </div>
         
         <div>
@@ -144,8 +211,11 @@ export default function LeadMagnetForm() {
             required
             value={formData.city}
             onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-azul-confianca focus:border-transparent"
+            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-azul-confianca focus:border-transparent ${
+              errors.city ? 'border-red-500' : 'border-gray-300'
+            }`}
           />
+          {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
         </div>
         
         <div>

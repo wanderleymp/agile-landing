@@ -5,118 +5,26 @@ import BlogImage from '@/components/blog/BlogImage'
 import BlogPagination from '@/components/blog/BlogPagination'
 import BlogPosts from '@/components/blog/BlogPosts'
 
-// This function is required for static export
-export async function generateStaticParams() {
-  // For a blog with pagination, we might want to generate static pages for common combinations
-  // For now, we'll return an empty array and handle pagination dynamically
-  return []
+// Função para buscar todos os posts via API
+async function fetchAllBlogPosts() {
+  try {
+    const response = await fetch('http://localhost:3002/api/blog/posts', {
+      cache: 'no-store'
+    })
+    
+    if (!response.ok) {
+      return []
+    }
+    
+    return await response.json()
+  } catch (error) {
+    console.error('Failed to fetch blog posts:', error)
+    return []
+  }
 }
 
-// Mock blog data - will be replaced with real data from CMS or API
-const getAllBlogPosts = () => [
-  {
-    id: 1,
-    title: "Como Cadastrar Produtos no Colibri Back Office",
-    excerpt: "Aprenda o passo a passo completo para cadastrar produtos no sistema Colibri Back Office, garantindo integração perfeita com o PDV.",
-    date: "2024-03-15",
-    author: "Equipe Agile",
-    category: "Tutoriais",
-    readTime: "5 min",
-    image: "/images/blog/product-registration.jpg",
-    slug: "cadastro-produtos-colibri-back-office"
-  },
-  {
-    id: 2,
-    title: "Sincronização PDV x Back Office: Guia Completo",
-    excerpt: "Entenda a importância da sincronização entre os módulos do Colibri e como evitar erros comuns no dia a dia do restaurante.",
-    date: "2024-03-10",
-    author: "Equipe Agile",
-    category: "Tutoriais",
-    readTime: "4 min",
-    image: "/images/blog/sync-pdv-backoffice.jpg",
-    slug: "sincronizacao-pdv-backoffice"
-  },
-  {
-    id: 3,
-    title: "Controle Financeiro com Colibri: Dicas Essenciais",
-    excerpt: "Descubra como utilizar o módulo financeiro do Colibri para ter controle total das finanças do seu restaurante.",
-    date: "2024-03-05",
-    author: "Equipe Agile",
-    category: "Gestão",
-    readTime: "6 min",
-    image: "/images/blog/controle-financeiro.jpg",
-    slug: "controle-financeiro-colibri"
-  },
-  {
-    id: 4,
-    title: "Como Usar o Colibri PED+ para Comandas Eletrônicas",
-    excerpt: "Guia completo para instalar e utilizar o aplicativo de comandas eletrônicas do Colibri em dispositivos Android.",
-    date: "2024-03-01",
-    author: "Equipe Agile",
-    category: "Tutoriais",
-    readTime: "7 min",
-    image: "/images/blog/colibri-ped.jpg",
-    slug: "colibri-ped-comandas-eletronicas"
-  },
-  {
-    id: 5,
-    title: "Integração do Colibri com iFood: Automatize Seus Pedidos",
-    excerpt: "Aprenda a configurar a integração automática com iFood e outros deliverys para receber pedidos diretamente no sistema.",
-    date: "2024-02-25",
-    author: "Equipe Agile",
-    category: "Integrações",
-    readTime: "6 min",
-    image: "/images/blog/colibri-ifood.jpg",
-    slug: "colibri-ifood-integracao"
-  },
-  {
-    id: 6,
-    title: "Fechamento de Caixa do Colibri: Passo a Passo",
-    excerpt: "Domine completamente o fechamento de caixa do Colibri com nosso guia detalhado passo a passo.",
-    date: "2024-02-20",
-    author: "Equipe Agile",
-    category: "Tutoriais",
-    readTime: "8 min",
-    image: "/images/blog/fechamento-caixa.jpg",
-    slug: "fechamento-caixa-colibri"
-  },
-  {
-    id: 7,
-    title: "Relatórios Gerenciais do Colibri: Tomada de Decisão",
-    excerpt: "Aprenda a interpretar os principais relatórios do Colibri para tomar decisões estratégicas para o seu restaurante.",
-    date: "2024-02-15",
-    author: "Equipe Agile",
-    category: "Gestão",
-    readTime: "6 min",
-    image: "/images/blog/relatorios-gerenciais.jpg",
-    slug: "relatorios-gerenciais-colibri"
-  },
-  {
-    id: 8,
-    title: "Gestão de Estoque Inteligente com Colibri",
-    excerpt: "Descubra como otimizar seu controle de estoque com as ferramentas inteligentes do sistema Colibri.",
-    date: "2024-02-10",
-    author: "Equipe Agile",
-    category: "Tutoriais",
-    readTime: "7 min",
-    image: "/images/blog/gestao-estoque.jpg",
-    slug: "gestao-estoque-colibri"
-  },
-  {
-    id: 9,
-    title: "Fidelização de Clientes com o Colibri Delivery",
-    excerpt: "Estratégias para criar programas de fidelização eficazes usando o módulo de delivery do Colibri.",
-    date: "2024-02-05",
-    author: "Equipe Agile",
-    category: "Gestão",
-    readTime: "5 min",
-    image: "/images/blog/clientes-fieis.jpg",
-    slug: "fidelizacao-clientes-colibri"
-  }
-]
-
 // Get unique categories from posts
-const getCategories = (posts: ReturnType<typeof getAllBlogPosts>) => {
+const getCategories = (posts: any[]) => {
   const categoryNames = ['Todos', ...Array.from(new Set(posts.map(post => post.category)))]
   return categoryNames.map(category => ({
     name: category,
@@ -124,35 +32,26 @@ const getCategories = (posts: ReturnType<typeof getAllBlogPosts>) => {
   }))
 }
 
-// Simple pagination function
-const paginate = (posts: any[], currentPage: number, postsPerPage: number) => {
-  const startIndex = (currentPage - 1) * postsPerPage
-  const endIndex = startIndex + postsPerPage
-  return posts.slice(startIndex, endIndex)
+// This function is required for static export
+export async function generateStaticParams() {
+  // For a blog with pagination, we might want to generate static pages for common combinations
+  // For now, we'll return an empty array and handle pagination dynamically
+  return []
 }
 
-// Get total pages
-const getTotalPages = (totalPosts: number, postsPerPage: number) => {
-  return Math.ceil(totalPosts / postsPerPage)
-}
-
-export default function BlogPage() {
+export default async function BlogPage() {
   // For static generation, we use default values
   // But we'll pass all data to client components for dynamic filtering
   const currentPage = 1
   const postsPerPage = 3
-  const selectedCategory = 'Todos'
   
-  const allPosts = getAllBlogPosts()
+  const allPosts = await fetchAllBlogPosts()
   const categories = getCategories(allPosts)
   
-  // Filter posts by category
-  const categoryFilteredPosts = selectedCategory === 'Todos' 
-    ? allPosts 
-    : allPosts.filter(post => post.category === selectedCategory)
-  
-  const filteredPosts = paginate(categoryFilteredPosts, currentPage, postsPerPage)
-  const totalPages = getTotalPages(categoryFilteredPosts.length, postsPerPage)
+  // Filter posts by category (default is 'Todos')
+  const categoryFilteredPosts = allPosts
+  const filteredPosts = categoryFilteredPosts.slice(0, postsPerPage)
+  const totalPages = Math.ceil(categoryFilteredPosts.length / postsPerPage)
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -184,8 +83,6 @@ export default function BlogPage() {
 
             {/* Blog Posts - using client component for dynamic filtering */}
             <BlogPosts allPosts={allPosts} postsPerPage={postsPerPage} />
-
-
           </div>
 
           {/* Sidebar */}
@@ -209,9 +106,7 @@ export default function BlogPage() {
                   <li key={category.name}>
                     <Link 
                       href={`/blog${category.name === 'Todos' ? '' : `?category=${category.name}`}`}
-                      className={`flex justify-between items-center w-full p-2 rounded-lg hover:bg-cinza-claro ${
-                        category.name === selectedCategory ? 'bg-cinza-claro' : ''
-                      }`}
+                      className={`flex justify-between items-center w-full p-2 rounded-lg hover:bg-cinza-claro`}
                     >
                       <span className="text-cinza-escuro">{category.name}</span>
                       <span className="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">
@@ -227,7 +122,7 @@ export default function BlogPage() {
             <div className="bg-white rounded-xl p-6 shadow-sm">
               <h3 className="font-poppins font-bold text-lg text-cinza-escuro mb-4">Mais Populares</h3>
               <div className="space-y-4">
-                {allPosts.slice(0, 3).map((post) => (
+                {allPosts.slice(0, 3).map((post: any) => (
                   <Link 
                     key={`popular-${post.id}`} 
                     href={`/blog/${post.slug}`}
