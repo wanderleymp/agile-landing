@@ -4,12 +4,13 @@ import LeadMagnetForm from '@/components/blog/LeadMagnetForm'
 import BlogImage from '@/components/blog/BlogImage'
 import BlogPagination from '@/components/blog/BlogPagination'
 import BlogPosts from '@/components/blog/BlogPosts'
+import { getAllBlogPosts, getCategories } from '@/lib/blog'
 
-// Função para buscar todos os posts via API
+// Função para buscar todos os posts usando função local
 async function fetchAllBlogPosts() {
   try {
-    const response = await fetch('http://localhost:3002/api/blog/list')
-    const posts = await response.json()
+    // Usar a função local em vez de fetch para evitar problemas de rede durante build
+    const posts = getAllBlogPosts()
     return posts
   } catch (error) {
     console.error('Failed to fetch blog posts:', error)
@@ -17,22 +18,44 @@ async function fetchAllBlogPosts() {
   }
 }
 
-// Get unique categories from posts
-const getCategories = (posts: any[]) => {
-  const categoryNames = ['Todos', ...Array.from(new Set(posts.map(post => post.category)))]
-  return categoryNames.map(category => ({
-    name: category,
-    count: category === 'Todos' ? posts.length : posts.filter(post => post.category === category).length
-  }))
-}
-
 // This function is required for static export
 export async function generateStaticParams() {
-  // For a blog with pagination, we might want to generate static pages for common combinations
-  // For now, we'll generate a few example pages
-  return Array.from({ length: 5 }, (_, i) => ({
-    page: (i + 1).toString(),
-  }))
+  try {
+    // Usar a função local em vez de fetch para evitar problemas de rede durante build
+    const posts = getAllBlogPosts()
+    
+    // Para uma página de blog com paginação, podemos gerar páginas estáticas para combinações comuns
+    // Vamos gerar páginas para as primeiras 5 páginas e para cada categoria
+    const categories = getCategories(posts);
+    const totalPages = Math.ceil(posts.length / 3); // 3 posts por página
+    
+    const params = [];
+    
+    // Gerar páginas para a visualização padrão (sem categoria)
+    for (let i = 1; i <= Math.min(5, totalPages); i++) {
+      params.push({ page: i.toString() });
+    }
+    
+    // Gerar páginas para cada categoria
+    for (const category of categories) {
+      if (category.name !== 'Todos') {
+        const categoryPosts = posts.filter(post => post.category === category.name);
+        const categoryTotalPages = Math.ceil(categoryPosts.length / 3);
+        
+        for (let i = 1; i <= Math.min(3, categoryTotalPages); i++) {
+          params.push({ 
+            page: i.toString(),
+            category: category.name
+          });
+        }
+      }
+    }
+    
+    return params;
+  } catch (error) {
+    console.error('Failed to generate static params:', error);
+    return [];
+  }
 }
 
 export default async function BlogPage() {

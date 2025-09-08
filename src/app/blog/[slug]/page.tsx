@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Calendar, User, Clock, ArrowLeft, Search, AlertCircle } from 'lucide-react'
 import PostFooter from '@/components/blog/PostFooter'
+import { getBlogPost, getAllBlogPosts } from '@/lib/blog'
 
 interface BlogPost {
   id?: number
@@ -9,9 +10,10 @@ interface BlogPost {
   author: string
   readTime: string
   category: string
-  content: string
+  content?: string
   slug: string
   excerpt?: string
+  image?: string
 }
 
 interface PageProps {
@@ -23,22 +25,22 @@ interface PageProps {
 // Função necessária para exportação estática
 export async function generateStaticParams() {
   try {
-    const response = await fetch('http://localhost:3002/api/blog/list')
-    const posts = await response.json()
+    // Usar a função local em vez de fetch para evitar problemas de rede durante build
+    const posts = getAllBlogPosts()
     
-    return posts.map((post: BlogPost) => ({
+    return posts.map((post: any) => ({
       slug: post.slug,
     }))
   } catch (error) {
-    console.error('Failed to fetch blog posts for static params:', error)
+    console.error('Failed to generate static params:', error)
     return []
   }
 }
 
 export async function generateMetadata({ params }: PageProps) {
   try {
-    const response = await fetch(`http://localhost:3002/api/blog/posts/${params.slug}`)
-    const post = await response.json()
+    // Usar a função local em vez de fetch para evitar problemas de rede durante build
+    const post = getBlogPost(params.slug)
     
     if (!post) {
       return {
@@ -76,9 +78,9 @@ export default async function BlogPostPage({ params }: PageProps) {
   let relatedPosts: BlogPost[] = [];
   
   try {
-    // Fetch the main post
-    const postResponse = await fetch(`http://localhost:3002/api/blog/posts/${params.slug}`)
-    post = await postResponse.json()
+    // Fetch the main post using local function
+    const postData = getBlogPost(params.slug)
+    post = postData
     
     // If post not found, return not found component
     if (!post) {
@@ -119,9 +121,9 @@ export default async function BlogPostPage({ params }: PageProps) {
       );
     }
     
-    // Fetch all posts for related posts and sidebar
-    const allPostsResponse = await fetch('http://localhost:3002/api/blog/list')
-    allPosts = await allPostsResponse.json()
+    // Fetch all posts for related posts and sidebar using local function
+    const allPostsData = getAllBlogPosts()
+    allPosts = allPostsData
     
     // Get related posts (same category, excluding current post)
     relatedPosts = allPosts
@@ -224,7 +226,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               {/* Post Content */}
               <div 
                 className="prose max-w-none"
-                dangerouslySetInnerHTML={{ __html: post.content }}
+                dangerouslySetInnerHTML={{ __html: post.content || '' }}
               />
 
               {/* Post Footer */}

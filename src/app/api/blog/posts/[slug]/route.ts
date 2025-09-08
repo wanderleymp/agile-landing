@@ -3,11 +3,16 @@ import { getBlogPost, getAllBlogPosts } from '@/lib/blog'
 
 // Função necessária para exportação estática
 export async function generateStaticParams() {
-  const posts = getAllBlogPosts()
-  
-  return posts.map((post) => ({
-    slug: post.slug,
-  }))
+  try {
+    const posts = getAllBlogPosts()
+    
+    return posts.map((post) => ({
+      slug: post.slug,
+    }))
+  } catch (error) {
+    console.error('Failed to generate static params:', error)
+    return []
+  }
 }
 
 export async function GET(

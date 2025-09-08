@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
-// Função para ler todos os posts do blog
-export const getAllBlogPosts = () => {
+// Função para ler todos os posts do blog - apenas para uso no servidor
+export const getAllBlogPostsServer = () => {
   try {
     // Usar caminho relativo correto para o diretório de posts
     const postsDir = path.join(process.cwd(), 'src', 'app', 'blog', '[slug]', 'posts')
@@ -46,8 +46,8 @@ export const getAllBlogPosts = () => {
   }
 }
 
-// Função para ler um post específico do blog
-export const getBlogPost = (slug: string) => {
+// Função para ler um post específico do blog - apenas para uso no servidor
+export const getBlogPostServer = (slug: string) => {
   try {
     // Usar caminho relativo correto para o diretório de posts
     const postsDir = path.join(process.cwd(), 'src', 'app', 'blog', '[slug]', 'posts')
@@ -75,25 +75,4 @@ export const getBlogPost = (slug: string) => {
     console.error('Error reading blog post:', error)
     return null
   }
-}
-
-// Função para obter categorias únicas
-export const getCategories = (posts: ReturnType<typeof getAllBlogPosts>) => {
-  const categoryNames = ['Todos', ...Array.from(new Set(posts.map(post => post.category)))]
-  return categoryNames.map(category => ({
-    name: category,
-    count: category === 'Todos' ? posts.length : posts.filter(post => post.category === category).length
-  }))
-}
-
-// Função para paginação simples
-export const paginate = (posts: any[], currentPage: number, postsPerPage: number) => {
-  const startIndex = (currentPage - 1) * postsPerPage
-  const endIndex = startIndex + postsPerPage
-  return posts.slice(startIndex, endIndex)
-}
-
-// Função para obter número total de páginas
-export const getTotalPages = (totalPosts: number, postsPerPage: number) => {
-  return Math.ceil(totalPosts / postsPerPage)
 }

@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { useEffect, useState } from 'react'
 
 interface BlogPost {
   id: number
@@ -16,26 +15,9 @@ interface BlogPost {
   slug: string
 }
 
-export default function BlogPreviewSection() {
-  const [recentPosts, setRecentPosts] = useState<BlogPost[]>([])
-
-  useEffect(() => {
-    // Fetch blog posts from API endpoint
-    const fetchBlogPosts = async () => {
-      try {
-        const response = await fetch('/api/blog/list')
-        const posts = await response.json()
-        setRecentPosts(posts.slice(0, 3))
-      } catch (error) {
-        console.error('Failed to fetch blog posts:', error)
-        // Fallback to empty array
-        setRecentPosts([])
-      }
-    }
-
-    fetchBlogPosts()
-  }, [])
-
+// Move the data fetching to a server component or use a different approach
+// For now, we'll make this component client-side but remove the direct fs usage
+export default function BlogPreviewSection({ posts }: { posts: BlogPost[] }) {
   return (
     <section className="py-16 bg-cinza-claro">
       <div className="section-container">
@@ -49,7 +31,7 @@ export default function BlogPreviewSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {recentPosts.map((post) => (
+          {posts.map((post) => (
             <article key={post.id} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 card-hover">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
