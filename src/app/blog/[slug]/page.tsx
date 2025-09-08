@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Calendar, User, Clock, ArrowLeft, Search, AlertCircle } from 'lucide-react'
 import PostFooter from '@/components/blog/PostFooter'
-import { getBlogPost, getAllBlogPosts } from '@/lib/blog'
+import { getBlogPostServer, getAllBlogPostsServer } from '@/lib/blog-server'
 
 interface BlogPost {
   id?: number
@@ -25,8 +25,8 @@ interface PageProps {
 // Função necessária para exportação estática
 export async function generateStaticParams() {
   try {
-    // Usar a função local em vez de fetch para evitar problemas de rede durante build
-    const posts = getAllBlogPosts()
+    // Usar a função do servidor para evitar problemas de rede durante build
+    const posts = getAllBlogPostsServer()
     
     return posts.map((post: any) => ({
       slug: post.slug,
@@ -39,8 +39,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps) {
   try {
-    // Usar a função local em vez de fetch para evitar problemas de rede durante build
-    const post = getBlogPost(params.slug)
+    // Usar a função do servidor para evitar problemas de rede durante build
+    const post = getBlogPostServer(params.slug)
     
     if (!post) {
       return {
@@ -78,8 +78,8 @@ export default async function BlogPostPage({ params }: PageProps) {
   let relatedPosts: BlogPost[] = [];
   
   try {
-    // Fetch the main post using local function
-    const postData = getBlogPost(params.slug)
+    // Fetch the main post using server function
+    const postData = getBlogPostServer(params.slug)
     post = postData
     
     // If post not found, return not found component
@@ -121,8 +121,8 @@ export default async function BlogPostPage({ params }: PageProps) {
       );
     }
     
-    // Fetch all posts for related posts and sidebar using local function
-    const allPostsData = getAllBlogPosts()
+    // Fetch all posts for related posts and sidebar using server function
+    const allPostsData = getAllBlogPostsServer()
     allPosts = allPostsData
     
     // Get related posts (same category, excluding current post)

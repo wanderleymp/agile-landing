@@ -6,19 +6,8 @@ export const getAllBlogPosts = () => {
     return [
       {
         id: 1,
-        title: "Como Cadastrar Produtos no Colibri POS (Catálogo)",
-        excerpt: "Aprenda o passo a passo completo para cadastrar produtos no sistema Colibri POS através do Catálogo, garantindo integração perfeita com o PDV e emissão correta de cupons fiscais.",
-        date: "2024-09-08",
-        author: "Equipe Agile",
-        category: "Tutoriais",
-        readTime: "6 min",
-        image: "/images/blog/cadastro-produtos-colibri-pos.jpg",
-        slug: "cadastro-produtos-colibri-pos"
-      },
-      {
-        id: 2,
         title: "Como Usar o Módulo de Delivery do Colibri",
-        excerpt: "Domine o módulo de delivery do sistema Colibri para integrar seus pedidos de delivery e otimizar sua operação.",
+        excerpt: "Aprenda a configurar e utilizar o poderoso módulo de delivery do Colibri para gerenciar todos os seus pedidos de delivery em um só lugar.",
         date: "2024-03-20",
         author: "Equipe Agile",
         category: "Tutoriais",
@@ -27,7 +16,7 @@ export const getAllBlogPosts = () => {
         slug: "como-usar-modulo-delivery-colibri"
       },
       {
-        id: 3,
+        id: 2,
         title: "Como Cadastrar Produtos no Colibri Back Office",
         excerpt: "Aprenda o passo a passo completo para cadastrar produtos no sistema Colibri Back Office, garantindo integração perfeita com o PDV.",
         date: "2024-03-15",
@@ -38,7 +27,7 @@ export const getAllBlogPosts = () => {
         slug: "cadastro-produtos-colibri-back-office"
       },
       {
-        id: 4,
+        id: 3,
         title: "Sincronização PDV x Back Office: Guia Completo",
         excerpt: "Entenda como funciona a sincronização entre o PDV e o Back Office do sistema Colibri para manter seus dados atualizados.",
         date: "2024-03-10",
@@ -61,7 +50,17 @@ export const getBlogPost = (slug: string) => {
     // Este é um mock para desenvolvimento
     // Em produção, isso seria substituído por uma chamada API
     const allPosts = getAllBlogPosts();
-    return allPosts.find(post => post.slug === slug) || null;
+    const post = allPosts.find(post => post.slug === slug) || null;
+    
+    // Se encontrou o post, precisamos carregar o conteúdo real do arquivo JSON
+    if (post) {
+      // Em um ambiente real, isso seria uma chamada fetch para a API
+      // Por enquanto, vamos retornar o post com as propriedades básicas
+      // O conteúdo será carregado via server-side rendering
+      return post;
+    }
+    
+    return null;
   } catch (error) {
     console.error('Error reading blog post:', error);
     return null;
