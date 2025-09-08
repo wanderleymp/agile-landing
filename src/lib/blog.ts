@@ -1,81 +1,72 @@
-import fs from 'fs'
-import path from 'path'
-
-// Função para ler todos os posts do blog
+// Função para ler todos os posts do blog - versão cliente
 export const getAllBlogPosts = () => {
   try {
-    // Usar caminho relativo correto para o diretório de posts
-    const postsDir = path.join(process.cwd(), 'src', 'app', 'blog', '[slug]', 'posts')
-    
-    // Verificar se o diretório existe
-    if (!fs.existsSync(postsDir)) {
-      console.error('Posts directory not found:', postsDir)
-      return []
-    }
-    
-    const filenames = fs.readdirSync(postsDir)
-    
-    const posts = filenames
-      .filter(filename => filename.endsWith('.json'))
-      .map((filename, index) => {
-        const filePath = path.join(postsDir, filename)
-        const fileContents = fs.readFileSync(filePath, 'utf8')
-        const post = JSON.parse(fileContents)
-        
-        // Extrair slug do nome do arquivo
-        const slug = filename.replace(/\.json$/, '')
-        
-        return {
-          id: index + 1,
-          title: post.title,
-          excerpt: post.excerpt,
-          date: post.date,
-          author: post.author,
-          category: post.category,
-          readTime: post.readTime,
-          image: `/images/blog/${slug}.jpg`,
-          slug: slug
-        }
-      })
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) // Ordenar por data, mais recente primeiro
-      
-    return posts
+    // Este é um mock para desenvolvimento
+    // Em produção, isso seria substituído por uma chamada API
+    return [
+      {
+        id: 1,
+        title: "Como Cadastrar Produtos no Colibri POS (Catálogo)",
+        excerpt: "Aprenda o passo a passo completo para cadastrar produtos no sistema Colibri POS através do Catálogo, garantindo integração perfeita com o PDV e emissão correta de cupons fiscais.",
+        date: "2024-09-08",
+        author: "Equipe Agile",
+        category: "Tutoriais",
+        readTime: "6 min",
+        image: "/images/blog/cadastro-produtos-colibri-pos.jpg",
+        slug: "cadastro-produtos-colibri-pos"
+      },
+      {
+        id: 2,
+        title: "Como Usar o Módulo de Delivery do Colibri",
+        excerpt: "Domine o módulo de delivery do sistema Colibri para integrar seus pedidos de delivery e otimizar sua operação.",
+        date: "2024-03-20",
+        author: "Equipe Agile",
+        category: "Tutoriais",
+        readTime: "8 min",
+        image: "/images/blog/colibri-ifood.jpg",
+        slug: "como-usar-modulo-delivery-colibri"
+      },
+      {
+        id: 3,
+        title: "Como Cadastrar Produtos no Colibri Back Office",
+        excerpt: "Aprenda o passo a passo completo para cadastrar produtos no sistema Colibri Back Office, garantindo integração perfeita com o PDV.",
+        date: "2024-03-15",
+        author: "Equipe Agile",
+        category: "Tutoriais",
+        readTime: "5 min",
+        image: "/images/blog/sync-pdv-backoffice.jpg",
+        slug: "cadastro-produtos-colibri-back-office"
+      },
+      {
+        id: 4,
+        title: "Sincronização PDV x Back Office: Guia Completo",
+        excerpt: "Entenda como funciona a sincronização entre o PDV e o Back Office do sistema Colibri para manter seus dados atualizados.",
+        date: "2024-03-10",
+        author: "Equipe Agile",
+        category: "Tutoriais",
+        readTime: "7 min",
+        image: "/images/blog/sync-pdv-backoffice.jpg",
+        slug: "sincronizacao-pdv-backoffice"
+      }
+    ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   } catch (error) {
-    console.error('Error reading blog posts:', error)
-    return []
+    console.error('Error reading blog posts:', error);
+    return [];
   }
-}
+};
 
-// Função para ler um post específico do blog
+// Função para ler um post específico do blog - versão cliente
 export const getBlogPost = (slug: string) => {
   try {
-    // Usar caminho relativo correto para o diretório de posts
-    const postsDir = path.join(process.cwd(), 'src', 'app', 'blog', '[slug]', 'posts')
-    const filePath = path.join(postsDir, `${slug}.json`)
-    
-    // Verificar se o arquivo existe
-    if (!fs.existsSync(filePath)) {
-      console.error('Post file not found:', filePath)
-      return null
-    }
-    
-    const fileContents = fs.readFileSync(filePath, 'utf8')
-    const post = JSON.parse(fileContents)
-    
-    return {
-      title: post.title,
-      date: post.date,
-      author: post.author,
-      readTime: post.readTime,
-      category: post.category,
-      content: post.content,
-      slug: slug
-    }
+    // Este é um mock para desenvolvimento
+    // Em produção, isso seria substituído por uma chamada API
+    const allPosts = getAllBlogPosts();
+    return allPosts.find(post => post.slug === slug) || null;
   } catch (error) {
-    console.error('Error reading blog post:', error)
-    return null
+    console.error('Error reading blog post:', error);
+    return null;
   }
-}
+};
 
 // Função para obter categorias únicas
 export const getCategories = (posts: ReturnType<typeof getAllBlogPosts>) => {

@@ -1,0 +1,64 @@
+
+
+CADASTRO DE PRODUTO NO SISTEMA 
+ 
+1º​ - Abra o ​Catálogo​, irá abrir no navegador de internet padrão. 
+ 
+ 
+2º ​- Clique em ​Material​, caso não apareça o menu lateral, clique no ícone destacado. 
+ 
+
+ 
+3º​ - Clique no botão ​Novo​, irá abrir uma janela para preencher as informações. 
+ 
+ 
+4º​ - Clique no botão ​Gerar código​, para o sistema gere um código para ele. 
+ 
+Preencha as informações necessárias. 
+Descrição​: Nome que irá aparecer na janela de ​Dados fiscais ​e no ​Cupom fiscal​. 
+Grupo​: Grupo ao qual esse produto pertence no sistema, exemplo: Refrigerantes. 
+Descrição touch​: Nome que será exibido na tela de vendas do Colibri POS. 
+Descrição produção​: Nome que será impresso no cupom de pedido impresso. 
+
+Local de produção​: Onde esse produto será impresso, exemplo, BAR, COZINHA, CAIXA, 
+se não selecionar o local de produção esse produto não será impresso no cupom de 
+produção. 
+Vende web​: Marque essa opção caso deseje vender esse produto com integração iFood. 
+Qtde fracionada​: Se esse produto é vendido em quantidades fracionadas por exemplo 
+0,5KG de carne. 
+Requer observação​: Com essa opção marcada se torna obrigatório que seja selecionada 
+uma observação (que já esteja cadastrada e vinculada ao produto) ao selecionar ele no 
+pedido. Não recomendado usar. 
+Observações​: O nome já diz, digitando uma e apertando enter irá criar novas observações. 
+Classe​: Selecione a classe que esse produto vai pertencer. A classe são os botões que 
+contém os produtos que aparecem na tela de vendas, por exemplo o botão Massas, ao 
+clicar nele serão exibidas os pratos de massas. Geralmente é criado um grupo e uma classe 
+com o mesmo nome. 
+
+5º​ - Após preencher as informações, clique no botão ​Próximo​. 
+ 
+ 
+6º​ - Após clicar no botão próximo, preencha o preço desejado e clique em ​Salvar​. 
+ 
+Clicando em ​Salvar​ a janela irá se fechar e voltar para o catálogo, clicando em ​Salvar e 
+adicionar outro​ o sistema irá salvar o cadastro e voltar para a tela de informações para o 
+cadastro de outro produto. 
+ 
+
+7º​ - Volte ao ​Colibri Launcher​ e clique em ​Parâmetros fiscais​ para preencher a tributação 
+do produto, a senha é 1879, 1234, 6595, 9565.
+ 
+ 
+8º​ - Na janela de ​Parâmetros fiscais​, clique em ​Alíquotas​, será exibida a lista de produtos 
+cadastrados no sistema, procure na lista o(s) produto(s) que você cadastrou e preencha as 
+informações necessárias na direita, como NCM, CEST, CFOP, ORIGEM, IPPT, CST, PIS, 
+COFINS, ALÍQUOTAS, TIPO DE ALÍQUOTA (ICMS(PRODUTOS) OU ISS (PARA 
+SERVIÇOS). Após preencher clique no botão ​Salvar material​. 
+ 
+ 
+Depois de feito isso, teste uma venda usando apenas esse produto para ver se irá emitir o 
+cupom fiscal dele. Caso de erro, volte na aba ​Alíquotas​ dos ​Parâmetros fiscais​ e coloque 
+
+provisóriamente a tributação igual a de um produto que já esteja emitindo nota 
+normalmente. Caso tenha dúvidas nas informações favor entrar em contato com seu 
+contador. 
