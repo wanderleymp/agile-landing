@@ -114,7 +114,7 @@ export default function HeroSection() {
                       alt="Sistema Colibri"
                       width={300}
                       height={120}
-                      className="h-16 w-auto object-contain"
+                      className="w-auto max-w-[200px] md:max-w-[250px] object-contain"
                       fallback="/images/logos/colibri-placeholder.svg"
                       priority
                     />

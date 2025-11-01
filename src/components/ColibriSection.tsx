@@ -96,7 +96,7 @@ export default function ColibriSection() {
                 alt="Sistema Colibri"
                 width={400}
                 height={160}
-                className="h-20 w-auto object-contain"
+                className="w-auto max-w-[250px] md:max-w-[300px] object-contain"
                 fallback="/images/logos/colibri-placeholder.svg"
                 priority
               />
