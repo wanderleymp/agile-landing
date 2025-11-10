@@ -11,6 +11,7 @@ import FAQSection from '@/components/FAQSection'
 import Footer from '@/components/Footer'
 import BlogPreviewSection from '@/components/BlogPreviewSection'
 import WhatsAppButton from '@/components/WhatsAppButton'
+import SegmentosSection from '@/components/SegmentosSection'
 import { getAllBlogPostsServer } from '@/lib/blog-server'
 
 export default async function Home() {
@@ -23,6 +24,7 @@ export default async function Home() {
       <Header />
       <HeroSection />
       <CredibilitySection />
+      <SegmentosSection />
       <ColibriSection />
       <TrustSection />
       <ContabilidadeSection />

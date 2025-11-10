@@ -4,53 +4,6 @@ import { UtensilsCrossed, Truck, Coffee, Beer, Zap, BarChart3, CheckCircle, Shie
 import OptimizedImage from './ImageManager'
 
 export default function ColibriSection() {
-  const modules = [
-    {
-      icon: UtensilsCrossed,
-      title: "MÓDULO MESA",
-      subtitle: "Para Restaurantes Tradicionais",
-      features: [
-        "Controle completo de mesas e comandas",
-        "Divisão de contas automática",
-        "Histórico completo de pedidos",
-        "Relatórios de ocupação por período"
-      ]
-    },
-    {
-      icon: Truck,
-      title: "MÓDULO DELIVERY",
-      subtitle: "Integração Total com Deliverys",
-      features: [
-        "Integração com as principais plataformas",
-        "Delivery próprio com controle de entregadores",
-        "Rastreamento de pedidos em tempo real",
-        "Otimização de rotas de entrega"
-      ]
-    },
-    {
-      icon: Coffee,
-      title: "MÓDULO BALCÃO",
-      subtitle: "Fast Food e Lanchonetes",
-      features: [
-        "PDV otimizado para atendimento rápido",
-        "Controle de filas e senhas",
-        "Integração com displays de pedidos",
-        "Gestão de combos e promoções"
-      ]
-    },
-    {
-      icon: Beer,
-      title: "MÓDULO FICHA",
-      subtitle: "Bares e Petiscarias",
-      features: [
-        "Sistema de fichas personalizado",
-        "Controle de consumo por cliente",
-        "Gestão de happy hour e promoções",
-        "Relatórios de consumo médio"
-      ]
-    }
-  ]
-
   const operationalBenefits = [
     { icon: Zap, title: "40% mais agilidade", description: "no atendimento aos clientes" },
     { icon: BarChart3, title: "Controle total do estoque", description: "em tempo real" },
@@ -111,40 +64,6 @@ export default function ColibriSection() {
             Descubra por que milhares de estabelecimentos escolhem o Colibri para 
             revolucionar suas operações.
           </p>
-        </div>
-
-        {/* Módulos */}
-        <div className="mb-20">
-          <h3 className="font-poppins font-bold text-2xl md:text-3xl text-center text-cinza-escuro mb-12">
-            Os 4 Módulos Essenciais
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {modules.map((module, index) => (
-              <div key={index} className="bg-white rounded-xl p-8 shadow-lg card-hover">
-                <div className="flex items-center space-x-4 mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-azul-confianca to-verde-sucesso rounded-xl flex items-center justify-center">
-                    <module.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-poppins font-bold text-xl text-cinza-escuro">
-                      {module.title}
-                    </h4>
-                    <p className="text-azul-confianca font-medium">
-                      {module.subtitle}
-                    </p>
-                  </div>
-                </div>
-                <ul className="space-y-3">
-                  {module.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start space-x-3">
-                      <CheckCircle className="w-5 h-5 text-verde-sucesso mt-0.5 flex-shrink-0" />
-                      <span className="text-cinza-escuro">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* Benefícios */}
