@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://agilegestaoempresarial.com.br
+
+# Sitemaps
+Sitemap: https://agilegestaoempresarial.com.br/sitemap.xml
