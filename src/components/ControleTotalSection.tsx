@@ -9,19 +9,19 @@ export default function ControleTotalSection() {
       icon: Calculator,
       title: "Saiba o custo exato do seu 'Smash Burger'",
       description: "Controle o custo de cada ingrediente (150g de carne, 30g de queijo, 1 pão). O Colibri dá baixa automática no estoque a cada venda, baseado na sua ficha técnica.",
-      image: "/images/hamburgueria/ficha-tecnica-hamburgueria-v2.jpg"
+      image: "/images/hamburgueria/v2/ficha-tecnica-hamburgueria-v2.jpg"
     },
     {
       icon: Tablet,
       title: "Comanda que não trava na hora do 'rush'",
       description: "Um PDV rápido (tablet, celular ou computador) que envia o pedido direto para a cozinha (KDS). Menos erros, clientes mais felizes.",
-      image: "/images/hamburgueria/pdv-hamburgueria-v2.jpg"
+      image: "/images/hamburgueria/v2/pdv-hamburgueria-v2.jpg"
     },
     {
       icon: ShoppingBag,
       title: "Integração total com iFood e Delivery Próprio",
       description: "Receba pedidos do iFood ou do seu app próprio direto no caixa, sem redigitação. O pedido já entra na fila da cozinha e no controle de estoque.",
-      image: "/images/hamburgueria/delivery-hamburgueria-v2.jpg"
+      image: "/images/hamburgueria/v2/delivery-hamburgueria-v2.jpg"
     }
   ]
 
