@@ -22,7 +22,7 @@ export default function HeroHamburgueria() {
   return (
     <section className="relative py-20 md:py-32 overflow-hidden">
       {/* Background Image with Overlay */}
-      <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/hamburgueria/hero-hamburgueria.jpg')" }}></div>
+      <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/hamburgueria/hero-hamburgueria-v2.jpg')" }}></div>
       <div className="absolute inset-0 bg-gradient-to-br from-azul-confianca/90 to-verde-sucesso/90"></div>
       
       <div className="section-container relative z-10">
